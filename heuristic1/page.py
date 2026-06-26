@@ -1,7 +1,7 @@
 import streamlit as st
 
 from heuristic1.loaders import country_geojson, owid
-from heuristic1.chart import global_nation_co2_emission, top_emission_nation
+from heuristic1.chart import global_nation_co2_emission, top_emission_nation, emission_trend_industry
 
 st.set_page_config(layout="wide")
 
@@ -35,4 +35,15 @@ with st.sidebar:
         index=0
     )
 
+    start_year, end_year = st.slider(
+        "Year range",
+        # TODO: Change to actual year range base on data
+        1900, 
+        2024,
+        (1900, 2024)
+    )
+
+st.title("Carbon Emissions by Nations")
 overview_section()
+st.subheader(f"Global CO₂ Emissions Trend by Industry ({start_year}–{end_year})")
+st.plotly_chart(emission_trend_industry.chart(owid.load(), range(start_year, end_year)))
