@@ -1,7 +1,7 @@
 import streamlit as st
 
-from heuristic1.loaders import country_geojson, owid
-from heuristic1.chart import global_nation_co2_emission, top_emission_nation, emission_trend_industry, top_emission_nation_income_group, bottom_emission_nation_per_capita, top_emission_nation_per_capita
+from heuristic1.loaders import country_geojson, owid, edgar
+from heuristic1.chart import global_nation_co2_emission, top_emission_nation, emission_trend_industry, top_emission_nation_income_group, bottom_emission_nation_per_capita, top_emission_nation_per_capita, top_emission_nation_sector
 
 st.set_page_config(layout="wide")
 
@@ -56,7 +56,6 @@ with st.sidebar:
         (1900, 2024)
     )
 
-
 def top_n_bottom_emission_nations_section():
     top, bottom = st.columns(2, vertical_alignment="top")
     n = 20
@@ -74,6 +73,12 @@ def top_n_bottom_emission_nations_section():
                 .update_layout(height=max(400, n * 28)),
         )
 
+def top_emission_nation_sector_section():
+    n = 20
+    st.plotly_chart(
+        top_emission_nation_sector.chart(edgar.load(), selected_year, n)
+            .update_layout(height=max(400, n * 28))
+    )
 
 st.title("Carbon Emissions by Nations")
 overview_section()
@@ -83,3 +88,4 @@ st.plotly_chart(emission_trend_industry.chart(
     owid.load(), range(start_year, end_year)))
 top_emission_nations_then_now()
 top_n_bottom_emission_nations_section()
+top_emission_nation_sector_section()
