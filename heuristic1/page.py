@@ -1,10 +1,9 @@
 import streamlit as st
 
 from heuristic1.loaders import country_geojson, owid
-from heuristic1.chart import global_nation_co2_emission, top_emission_nation, emission_trend_industry
+from heuristic1.chart import global_nation_co2_emission, top_emission_nation, emission_trend_industry, top_emission_nation_income_group
 
 st.set_page_config(layout="wide")
-
 
 def overview_section():
     map, top = st.columns([3, 1])
@@ -24,6 +23,15 @@ def overview_section():
             top_emission_nation.chart(owid.load(), selected_year, top_number)
         )
 
+def top_emission_nations_then_now():
+    then, now = st.columns(2, vertical_alignment="top")
+    top_n = 20
+
+    with then:
+        st.plotly_chart(top_emission_nation_income_group.chart(owid.load(), start_year, top_n))
+
+    with now:
+        st.plotly_chart(top_emission_nation_income_group.chart(owid.load(), selected_year, top_n))
 
 with st.sidebar:
     st.header("Filters")
@@ -47,3 +55,5 @@ st.title("Carbon Emissions by Nations")
 overview_section()
 st.subheader(f"Global CO₂ Emissions Trend by Industry ({start_year}–{end_year})")
 st.plotly_chart(emission_trend_industry.chart(owid.load(), range(start_year, end_year)))
+top_emission_nations_then_now()
+
