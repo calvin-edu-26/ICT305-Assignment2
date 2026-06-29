@@ -11,7 +11,7 @@ def chart(data: pd.DataFrame, year: int, top_n: int):
         top,
         x="co2_including_luc_per_capita",
         y="country",
-        labels={"co2": "CO₂ (million tonnes)", "country": ""}
+        labels={"co2_including_luc_per_capita": "Annual CO₂ Emission (Mt) Per Capita", "country": ""}
     )
 
     fig.add_vline(

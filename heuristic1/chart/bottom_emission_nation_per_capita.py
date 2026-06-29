@@ -12,7 +12,7 @@ def chart(data: pd.DataFrame, year: int, top_n: int):
         x="co2_including_luc_per_capita",
         y="country",
         text="co2_including_luc_per_capita",
-        labels={"co2": "CO₂ (million tonnes)", "country": ""}
+        labels={"co2_including_luc_per_capita": "Annual CO₂ Emission (Mt) Per Capita", "country": ""}
     )
 
     fig.update_traces(texttemplate="%{text:.2f}t", textposition="outside")
