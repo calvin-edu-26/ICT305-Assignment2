@@ -40,12 +40,17 @@ def overview_section():
 
 
 def top_emission_nations_then_now():
-    then, now = st.columns(2, vertical_alignment="top")
     top_n = 20
+    st.header(f"Top {top_n} Carbon Emission Nations - Then VS Now")
 
+    then, now = st.columns(2, vertical_alignment="top")
+    
     with then:
-        st.plotly_chart(top_emission_nation_income_group.chart(
-            owid.load(), start_year, top_n))
+        st.subheader(f"{start_year}")
+        st.plotly_chart(
+            top_emission_nation_income_group.chart(owid.load(), start_year, top_n)
+                .update_layout(height=max(400, top_n * 28))
+        )
         
         insight.render("Just the top 20 countries generate the majority of global CO₂. Pressure on these governments — especially the wealthiest among them — offers the fastest path to meaningful cuts.")
         recommendation.render([
@@ -53,8 +58,11 @@ def top_emission_nations_then_now():
         ])
 
     with now:
-        st.plotly_chart(top_emission_nation_income_group.chart(
-            owid.load(), selected_year, top_n))
+        st.subheader(f"{selected_year}")
+        st.plotly_chart(
+            top_emission_nation_income_group.chart(owid.load(), selected_year, top_n)
+                .update_layout(height=max(400, top_n * 28))    
+        )
 
 
 with st.sidebar:
