@@ -11,7 +11,7 @@ def chart(data: pd.DataFrame, year: int, top: int):
         top_countries,
         x="co2_including_luc",
         y="country",
-        labels={"co2_including_luc": "Annual CO₂ emission (Mt)", "country": ""}
+        labels={"co2_including_luc": "Annual CO₂ Emission (Mt)", "country": ""}
     )
 
     fig.update_layout(yaxis=dict(autorange="reversed"))
