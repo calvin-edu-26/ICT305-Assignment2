@@ -1,9 +1,9 @@
 import pandas as pd
 import plotly.express as px
 
-def chart(data: pd.DataFrame, geojson, year: int):
+def chart(data: pd.DataFrame, geojson, year: int, percentile: float):
     snapshot = data[data["year"] == year]
-    p95 = snapshot["co2_including_luc"].quantile(0.95)
+    snapshot_percentile = snapshot["co2_including_luc"].quantile(percentile / 100)
 
     fig = px.choropleth_map(
         snapshot,
@@ -13,9 +13,10 @@ def chart(data: pd.DataFrame, geojson, year: int):
         color="co2_including_luc",
         hover_name="country",
         color_continuous_scale="YlOrRd",
-        range_color=(0, p95),
+        range_color=(0, snapshot_percentile),
         zoom=1,
         center={"lat": 20, "lon": 0},
+        labels={"co2_including_luc": "Annual CO₂ emission (Mt)"},
         height=700
     )
 

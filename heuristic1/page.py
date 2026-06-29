@@ -2,18 +2,32 @@ import streamlit as st
 
 from heuristic1.loaders import country_geojson, owid, edgar
 from heuristic1.chart import global_nation_co2_emission, top_emission_nation, emission_trend_industry, top_emission_nation_income_group, bottom_emission_nation_per_capita, top_emission_nation_per_capita, top_emission_nation_sector
+from heuristic1.components import insight, recommendation
+from heuristic1.components.recommendation import Recommendation
 
 st.set_page_config(layout="wide")
 
 
 def overview_section():
+    st.header("Carbon Emissions by Nations")
     map, top = st.columns([3, 1])
 
     with map:
+        selected_percentile = st.selectbox(
+            "Percentile:",
+            options=["100", "95"],
+            index=0,
+            width=100
+        )
+        
         st.plotly_chart(
             global_nation_co2_emission.chart(
-                owid.load(), country_geojson.load(), selected_year),
-            use_container_width=True,
+                    owid.load(), 
+                    country_geojson.load(), 
+                    selected_year, 
+                    float(selected_percentile)
+                ), 
+                use_container_width=True,
         )
 
     with top:
@@ -32,6 +46,11 @@ def top_emission_nations_then_now():
     with then:
         st.plotly_chart(top_emission_nation_income_group.chart(
             owid.load(), start_year, top_n))
+        
+        insight.render("Just the top 20 countries generate the majority of global CO₂. Pressure on these governments — especially the wealthiest among them — offers the fastest path to meaningful cuts.")
+        recommendation.render([
+            Recommendation("National Policymakers", ["Develop sector-specific legislation — a carbon price alone is insufficient; targeted regulations on buildings, transport, and agriculture are needed alongside it."])
+        ])
 
     with now:
         st.plotly_chart(top_emission_nation_income_group.chart(
@@ -80,7 +99,6 @@ def top_emission_nation_sector_section():
             .update_layout(height=max(400, n * 28))
     )
 
-st.title("Carbon Emissions by Nations")
 overview_section()
 st.subheader(
     f"Global CO₂ Emissions Trend by Industry ({start_year}–{end_year})")
