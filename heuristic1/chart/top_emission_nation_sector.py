@@ -23,7 +23,7 @@ def chart(data: pd.DataFrame, year: int, top_n: int):
         plot_data,
         x="co2",
         y="Name",
-        labels={"co2": "CO₂ (million tonnes)", "Name": ""},
+        labels={"co2": "Annual CO₂ Emission (Gg)", "Name": "", "sector": "Sector"},
         color="sector",
         barmode="stack",
         color_discrete_map={"Other": "lightgray"},
