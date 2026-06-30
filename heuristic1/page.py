@@ -5,9 +5,15 @@ from heuristic1.chart import global_nation_co2_emission, top_emission_nation, gl
 from heuristic1.components import insight, recommendation
 from heuristic1.components.recommendation import Recommendation
 
-st.set_page_config(layout="wide")
+# Data Source
+owid_data = owid.load()
+edgar_data = edgar.load()
 
+# Data Source Reference
+OWID_REF = "Source: Our World in Data — CO₂ and Greenhouse Gas Emissions dataset (owid-co2-data.csv)"
+EDGAR_REF = "Source: IEA-EDGAR CO₂ (EDGAR_2025_GHG) — European Commission Joint Research Centre & IEA, September 2025"
 
+# Section
 def overview_section():
     st.header("Carbon Emissions by Nations")
     map, top = st.columns([3, 1])
@@ -24,7 +30,7 @@ def overview_section():
         
         st.plotly_chart(
             global_nation_co2_emission.chart(
-                    owid.load(), 
+                    owid_data, 
                     country_geojson.load(), 
                     selected_year, 
                     float(selected_percentile)
@@ -37,20 +43,24 @@ def overview_section():
         st.subheader(f"Top {top_number} Countries by CO₂ Emissions")
 
         st.plotly_chart(
-            top_emission_nation.chart(owid.load(), selected_year, top_number)
+            top_emission_nation.chart(owid_data, selected_year, top_number)
         )
+
+    st.caption(OWID_REF)
 
 def global_emission_trend_section():
     st.header(f"Global Emission Trend ({start_year}-{end_year})")
 
     st.plotly_chart(
         global_emission_trend.chart(
-            owid.load(),
+            owid_data,
             range(start_year, end_year),
         )
     )
 
-def top_emission_nations_then_now():
+    st.caption(OWID_REF)
+
+def top_emission_nations_then_now_section():
     top_n = 20
     st.header(f"Top {top_n} Carbon Emission Nations - Then VS Now")
 
@@ -59,7 +69,7 @@ def top_emission_nations_then_now():
     with then:
         st.subheader(f"{start_year}")
         st.plotly_chart(
-            top_emission_nation_income_group.chart(owid.load(), start_year, top_n)
+            top_emission_nation_income_group.chart(owid_data, start_year, top_n)
                 .update_layout(height=max(400, top_n * 28))
         )
         
@@ -71,11 +81,42 @@ def top_emission_nations_then_now():
     with now:
         st.subheader(f"{selected_year}")
         st.plotly_chart(
-            top_emission_nation_income_group.chart(owid.load(), selected_year, top_n)
+            top_emission_nation_income_group.chart(owid_data, selected_year, top_n)
                 .update_layout(height=max(400, top_n * 28))    
         )
 
+    st.caption(OWID_REF)
 
+def top_n_bottom_emission_nations_section():
+    top, bottom = st.columns(2, vertical_alignment="top")
+    n = 20
+
+    with top:
+        st.plotly_chart(
+            top_emission_nation_per_capita.chart(owid_data, selected_year, n)
+                .update_layout(height=max(400, n * 28)),
+            use_container_width=True
+        )
+
+    with bottom:
+        st.plotly_chart(
+            bottom_emission_nation_per_capita.chart(owid_data, selected_year, n)
+                .update_layout(height=max(400, n * 28)),
+        )
+
+    st.caption(OWID_REF)
+
+def top_emission_nation_sector_section():
+    n = 20
+    st.plotly_chart(
+        top_emission_nation_sector.chart(edgar_data, selected_year, n)
+            .update_layout(height=max(400, n * 28))
+    )
+
+    st.caption(EDGAR_REF)
+
+# Layout
+st.set_page_config(layout="wide")
 with st.sidebar:
     st.header("Filters")
 
@@ -94,32 +135,8 @@ with st.sidebar:
         (1900, 2024)
     )
 
-def top_n_bottom_emission_nations_section():
-    top, bottom = st.columns(2, vertical_alignment="top")
-    n = 20
-
-    with top:
-        st.plotly_chart(
-            top_emission_nation_per_capita.chart(owid.load(), selected_year, n)
-                .update_layout(height=max(400, n * 28)),
-            use_container_width=True
-        )
-
-    with bottom:
-        st.plotly_chart(
-            bottom_emission_nation_per_capita.chart(owid.load(), selected_year, n)
-                .update_layout(height=max(400, n * 28)),
-        )
-
-def top_emission_nation_sector_section():
-    n = 20
-    st.plotly_chart(
-        top_emission_nation_sector.chart(edgar.load(), selected_year, n)
-            .update_layout(height=max(400, n * 28))
-    )
-
 overview_section()
 global_emission_trend_section()
-top_emission_nations_then_now()
+top_emission_nations_then_now_section()
 top_n_bottom_emission_nations_section()
 top_emission_nation_sector_section()
