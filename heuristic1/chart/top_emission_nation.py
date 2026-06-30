@@ -19,15 +19,12 @@ def chart(data: pd.DataFrame, year: int, top: int):
         chart_data,
         names="country",
         values="co2_including_luc",
+        color="country",
+        color_discrete_map={"Other": "lightgray"},
     )
-
-    max = sorted["co2_including_luc"].max()
-    colors = list(pc.sample_colorscale("YlOrRd", top_countries["co2_including_luc"] / max))
-    colors.append("lightgray")
 
     fig.update_traces(
         textinfo="label+percent",
-        marker=dict(colors=colors),
     )
 
     return fig
