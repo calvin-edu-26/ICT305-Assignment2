@@ -1,7 +1,7 @@
 import streamlit as st
 
 from heuristic1.loaders import country_geojson, owid, edgar
-from heuristic1.chart import global_nation_co2_emission, top_emission_nation, emission_trend_industry, top_emission_nation_income_group, bottom_emission_nation_per_capita, top_emission_nation_per_capita, top_emission_nation_sector
+from heuristic1.chart import global_nation_co2_emission, top_emission_nation, global_emission_trend, emission_trend_industry, top_emission_nation_income_group, bottom_emission_nation_per_capita, top_emission_nation_per_capita, top_emission_nation_sector
 from heuristic1.components import insight, recommendation
 from heuristic1.components.recommendation import Recommendation
 
@@ -40,6 +40,15 @@ def overview_section():
             top_emission_nation.chart(owid.load(), selected_year, top_number)
         )
 
+def global_emission_trend_section():
+    st.header(f"Global Emission Trend ({start_year}-{end_year})")
+
+    st.plotly_chart(
+        global_emission_trend.chart(
+            owid.load(),
+            range(start_year, end_year),
+        )
+    )
 
 def top_emission_nations_then_now():
     top_n = 20
@@ -110,10 +119,7 @@ def top_emission_nation_sector_section():
     )
 
 overview_section()
-st.subheader(
-    f"Global CO₂ Emissions Trend by Industry ({start_year}–{end_year})")
-st.plotly_chart(emission_trend_industry.chart(
-    owid.load(), range(start_year, end_year)))
+global_emission_trend_section()
 top_emission_nations_then_now()
 top_n_bottom_emission_nations_section()
 top_emission_nation_sector_section()
