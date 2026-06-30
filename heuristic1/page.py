@@ -15,10 +15,12 @@ def overview_section():
     with map:
         selected_percentile = st.selectbox(
             "Percentile:",
-            options=["100", "95"],
+            options=["95", "100"],
             index=0,
             width=100
         )
+
+        st.caption("Color scale capped at 95th percentile to show distribution. Hover for exact values.")
         
         st.plotly_chart(
             global_nation_co2_emission.chart(
