@@ -65,7 +65,7 @@ def exploratory_analysis_section():
 
     # ── SCATTER PLOT INLINE TOGGLES ───────────────────────────────────────────
     # Placed directly above the chart so changes are immediately visible.
-    tog_col1, tog_col2 = st.columns(2)
+    tog_col1, tog_col2, tog_col3 = st.columns(3)
 
     with tog_col1:
         show_medians = st.toggle(
@@ -81,6 +81,15 @@ def exploratory_analysis_section():
             index=0,
             horizontal=True,
             help="Switch between colouring dots by vulnerability score or by UN sub-region."
+        )
+
+    with tog_col3:
+        all_countries = sorted(data["Name"].unique().tolist())
+        selected_country = st.selectbox(
+            "Highlight Country",
+            options=["None"] + all_countries,
+            index=0,
+            help="Select a country to highlight its position on the scatter plot."
         )
 
     st.plotly_chart(
@@ -305,14 +314,6 @@ with st.sidebar:
         default=[],
         placeholder="All regions shown by default",
         help="Select one or more UN sub-regions to filter both charts simultaneously."
-    )
-
-    all_countries = sorted(data["Name"].unique().tolist())
-    selected_country = st.selectbox(
-        "🔍 Highlight Country",
-        options=["None"] + all_countries,
-        index=0,
-        help="Select a country to highlight its position on the scatter plot."
     )
 
 
