@@ -304,7 +304,7 @@ with st.sidebar:
         max_value=2018,
         value=2018,
         step=1,
-        help="Slide to explore how vulnerability has shifted over time (1995–2018)."
+        help="Slide to explore how vulnerability has shifted over time (1995–2018). Contents change specifically pre-2010 vs post-2010."
     )
 
     all_subregions = sorted(data["subregion"].unique().tolist())
@@ -313,7 +313,7 @@ with st.sidebar:
         options=all_subregions,
         default=[],
         placeholder="All regions shown by default",
-        help="Select one or more UN sub-regions to filter both charts simultaneously."
+        help="Select one or more UN sub-regions to filter the choropleth and scatterplot charts simultaneously."
     )
 
 
