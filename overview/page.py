@@ -66,7 +66,7 @@ with kpi1:
     # Calvin — Carbon Emissions
     share = get_top10_emissions_share(selected_year)
     st.metric(
-        label="🏭 Top 10 Emitters' Share",
+        label="Top 10 Emitters' Share",
         value=f"{share}%",
         help="Share of global CO₂ emissions from the top 10 emitting nations."
     )
@@ -75,7 +75,7 @@ with kpi2:
     # Ruben — Climate Vulnerability
     most_vuln = get_most_vulnerable(selected_year)
     st.metric(
-        label="⚠️ Most Vulnerable Nation",
+        label="Most Vulnerable Nation",
         value=most_vuln["Name"],
         delta=f"Score: {most_vuln['vulnerability']:.2f}",
         help="Country with the highest ND-GAIN vulnerability score."
@@ -85,7 +85,7 @@ with kpi3:
     # Lam — Extreme Weather
     # TODO: Replace with computed metric from Lam's dataset
     st.metric(
-        label="🌪️ Disaster Events",
+        label="Disaster Events",
         value="—",
         help="Lam's metric — to be added."
     )
@@ -94,7 +94,7 @@ with kpi4:
     # Lucas — Sea Level Rise
     # TODO: Replace with computed metric from Lucas's dataset
     st.metric(
-        label="🌊 Sea Level Rise",
+        label="Sea Level Rise",
         value="—",
         help="Lucas's metric — to be added."
     )
@@ -103,7 +103,7 @@ with kpi5:
     # Nengjie — Climate Finance
     # TODO: Replace with computed metric from Nengjie's dataset
     st.metric(
-        label="💰 Finance Gap",
+        label="Finance Gap",
         value="—",
         help="Nengjie's metric — to be added."
     )
@@ -115,4 +115,4 @@ st.divider()
 # To be decided collectively once all sub-heuristic charts are complete.
 
 st.subheader("Global Overview")
-st.info("📍 Group-level overview chart — to be confirmed once all sub-heuristics are complete.")
+st.info("Group-level overview chart (to be confirmed once all sub-heuristics are complete).")
