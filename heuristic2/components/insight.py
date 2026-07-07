@@ -15,5 +15,5 @@ def render(insight: str):
         The insight text to display. Written in page.py, not here.
     """
     with st.container(border=True):
-        st.markdown("**♦ WHAT THIS SHOWS**")
+        st.markdown("**Key Finding**")
         st.markdown(insight)
