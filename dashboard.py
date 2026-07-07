@@ -1,10 +1,31 @@
 import streamlit as st
 
-heuristic1 = st.Page("heuristic1/page.py", url_path="heuristics1", title="Heuristic 1")
-heuristic2 = st.Page("heuristic2/page.py", url_path="heuristics2", title="Heuristic 2")
-heuristic3 = st.Page("heuristic3/page.py", url_path="heuristics3", title="Heuristic 3")
-heuristic4 = st.Page("heuristic4/page.py", url_path="heuristics4", title="Heuristic 4")
-heuristic5 = st.Page("heuristic5/page.py", url_path="heuristics5", title="Heuristic 5")
+# ── PAGE DEFINITIONS ──────────────────────────────────────────────────────────
+# Each page maps to a page.py file in its respective folder.
+# Title appears in Streamlit's native sidebar navigation.
 
-pg = st.navigation([heuristic1, heuristic2, heuristic3, heuristic4, heuristic5])
+overview    = st.Page("overview/page.py",    title="Overview",                  ")
+heuristic1  = st.Page("heuristic1/page.py",  title="Carbon Emissions",          ")
+heuristic2  = st.Page("heuristic2/page.py",  title="Climate Vulnerability",     ")
+heuristic3  = st.Page("heuristic3/page.py",  title="Extreme Weather",           ")
+heuristic4  = st.Page("heuristic4/page.py",  title="Sea Level Rise",            ")
+heuristic5  = st.Page("heuristic5/page.py",  title="Climate Finance",           ")
+references  = st.Page("references/page.py",  title="Data References",           ")
+about       = st.Page("about/page.py",       title="About the Team",            ")
+
+# ── NAVIGATION ────────────────────────────────────────────────────────────────
+# st.navigation() renders Streamlit's native sidebar with all pages listed.
+# Overview is the default landing page (first in the list).
+
+pg = st.navigation([
+    overview,
+    heuristic1,
+    heuristic2,
+    heuristic3,
+    heuristic4,
+    heuristic5,
+    references,
+    about,
+])
+
 pg.run()
