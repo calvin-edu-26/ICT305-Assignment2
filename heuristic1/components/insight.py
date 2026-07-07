@@ -1,8 +1,4 @@
 from streamlit import info
 
-def render(insight: str):
-    return info(f"""
-    **♦ WHAT THIS SHOWS**
-
-    {insight}
-    """)
+def render(insights: list[str]):
+    return info(f"**♦ WHAT THIS SHOWS**\n\n{"\n\n".join(f"- {insight}" for insight in insights)}")
