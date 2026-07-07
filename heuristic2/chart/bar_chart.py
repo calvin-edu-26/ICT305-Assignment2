@@ -2,12 +2,24 @@ import pandas as pd
 import plotly.express as px
 
 # ── COUNTRY NAME CLEANING ─────────────────────────────────────────────────────
-# Some ND-GAIN country names are too long or truncated for clean chart display.
+# Exact strings as they appear in the ND-GAIN dataset.
+# Truncated or verbose names replaced with clean display labels.
 NAME_OVERRIDES = {
-    "Congo, the Democratic Republic of the": "DR Congo",
+    "Congo, the Democratic Republic o": "DR Congo",
     "Micronesia, Federated States of": "Micronesia",
     "Sao Tome and Principe": "São Tomé & Príncipe",
-    "Solomon Islands": "Solomon Islands",
+    "Bolivia, Plurinational State of": "Bolivia",
+    "Tanzania, United Republic of": "Tanzania",
+    "Iran, Islamic Republic of": "Iran",
+    "Korea, Republic of": "South Korea",
+    "Korea, Democratic People's Repub": "North Korea",
+    "Lao People's Democratic Republic": "Laos",
+    "Moldova, Republic of": "Moldova",
+    "Venezuela, Bolivarian Republic o": "Venezuela",
+    "Syrian Arab Republic": "Syria",
+    "Libyan Arab Jamahiriya": "Libya",
+    "Saint Vincent and the Grenadines": "St. Vincent & Grenadines",
+    "Saint Kitts and Nevis": "St. Kitts & Nevis",
 }
 
 
@@ -21,9 +33,6 @@ def chart(data: pd.DataFrame, selected_year: int):
            (the low-emitting half of the world)
         2. Rank those countries by vulnerability score (descending)
         3. Take the top 15
-
-    This directly answers the core analytical question:
-    "Which nations are most vulnerable relative to how little they emit?"
 
     Parameters
     ----------
@@ -45,8 +54,6 @@ def chart(data: pd.DataFrame, selected_year: int):
     snapshot["display_name"] = snapshot["Name"].replace(NAME_OVERRIDES)
 
     # ── FILTER TO LOW EMITTERS ────────────────────────────────────────────────
-    # Countries at or below the median CO₂ per capita are classified as
-    # low emitters — this is the population of interest for the Big Idea.
     median_co2 = snapshot["co2_per_capita"].median()
     low_emitters = snapshot[snapshot["co2_per_capita"] <= median_co2]
 
@@ -88,35 +95,35 @@ def chart(data: pd.DataFrame, selected_year: int):
         ),
     )
 
-    # ── MEDIAN VULNERABILITY ANNOTATION ──────────────────────────────────────
-    # Reference line showing where the global median vulnerability sits
-    # relative to these 15 countries — reinforces how far above average they are.
+    # ── GLOBAL MEDIAN VULNERABILITY LINE ──────────────────────────────────────
+    # White dashed line contrasts clearly against dark red bars.
+    # Thicker line weight ensures it reads above the axis gridlines.
     global_median_vuln = snapshot["vulnerability"].median()
 
     fig.add_vline(
         x=global_median_vuln,
         line_dash="dash",
-        line_color="grey",
-        line_width=1,
+        line_color="#FFFFFF",
+        line_width=2,
         annotation_text=f"Global Median: {global_median_vuln:.2f}",
         annotation_position="top right",
-        annotation_font_size=11,
-        annotation_font_color="grey",
+        annotation_font_size=12,
+        annotation_font_color="#FFFFFF",
     )
 
     # ── LAYOUT REFINEMENTS ────────────────────────────────────────────────────
     fig.update_layout(
         yaxis=dict(
-            autorange="reversed",              # Highest vulnerability at top
+            autorange="reversed",
             tickfont=dict(size=13),
         ),
         xaxis=dict(
             title="Vulnerability Score",
-            range=[0, 1],                      # Fixed range for year-to-year comparison
+            range=[0, 1],
             showgrid=True,
             gridcolor="rgba(200,200,200,0.3)",
         ),
-        coloraxis_showscale=False,             # Colour bar shown on choropleth already
+        coloraxis_showscale=False,
         margin=dict(l=10, r=20, t=70, b=40),
         title_font_size=15,
         plot_bgcolor="rgba(0,0,0,0)",
