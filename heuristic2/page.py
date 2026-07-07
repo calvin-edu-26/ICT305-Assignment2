@@ -86,7 +86,7 @@ def exploratory_analysis_section():
     with tog_col3:
         all_countries = sorted(data["Name"].unique().tolist())
         selected_country = st.selectbox(
-            "Highlight Country",
+            "🔍 Highlight Country",
             options=["None"] + all_countries,
             index=0,
             help="Select a country to highlight its position on the scatter plot."
@@ -341,10 +341,13 @@ with st.container(border=True):
     st.markdown(
         "Use the **Year slider** in the sidebar to track how climate vulnerability "
         "has shifted across nations from 1995 to 2018. Apply the **Sub-Region filter** "
-        "to focus on specific parts of the world. Use **Highlight Country** on the "
-        "scatter plot to assess a specific nation's position relative to global peers. "
-        "Cross-reference the choropleth map, scatter plot, and bar chart together — "
-        "each view illuminates a different dimension of the same injustice."
+        "to focus on specific parts of the world. Use the **Highlight Country** "
+        "selector above the scatter plot to assess a specific nation's position "
+        "relative to global peers. Toggle the **Median Guide Lines** on or off, and "
+        "switch between **Vulnerability Score** and **Sub-Region** colouring to explore "
+        "different dimensions of the data. Cross-reference the choropleth map, scatter "
+        "plot, and bar chart together — each view illuminates a different dimension "
+        "of the same injustice."
     )
 
 st.divider()
