@@ -135,21 +135,7 @@ def decision_support_section():
     """
     st.header("Decision Support")
 
-    # ── 1. HOW TO USE THE DASHBOARD ──────────────────────────────────────────
-    with st.container(border=True):
-        st.markdown("**How to Use This Dashboard**")
-        st.markdown(
-            "Use the **Year slider** in the sidebar to track how climate vulnerability "
-            "has shifted across nations from 1995 to 2018. Apply the **Sub-Region filter** "
-            "to focus on specific parts of the world. Use **Highlight Country** on the "
-            "scatter plot to assess a specific nation's position relative to global peers. "
-            "Cross-reference the choropleth map, scatter plot, and bar chart together — "
-            "each view illuminates a different dimension of the same injustice."
-        )
-
-    st.divider()
-
-    # ── 2. DECISIONS THIS DASHBOARD SUPPORTS ─────────────────────────────────
+    # ── 1. DECISIONS THIS DASHBOARD SUPPORTS ─────────────────────────────────
     with st.container(border=True):
         st.markdown("**Decisions This Dashboard Supports**")
         st.markdown(
@@ -278,6 +264,22 @@ st.markdown(
     > *"The nations least responsible for climate change are bearing its greatest consequences."*
     """
 )
+
+st.divider()
+
+# ── HOW TO USE THIS DASHBOARD ─────────────────────────────────────────────────
+# Placed before Exploratory Analysis so users are oriented before exploring.
+# Per course materials (Topic 3): introduce context before presenting data.
+with st.container(border=True):
+    st.markdown("**How to Use This Dashboard**")
+    st.markdown(
+        "Use the **Year slider** in the sidebar to track how climate vulnerability "
+        "has shifted across nations from 1995 to 2018. Apply the **Sub-Region filter** "
+        "to focus on specific parts of the world. Use **Highlight Country** on the "
+        "scatter plot to assess a specific nation's position relative to global peers. "
+        "Cross-reference the choropleth map, scatter plot, and bar chart together — "
+        "each view illuminates a different dimension of the same injustice."
+    )
 
 st.divider()
 
