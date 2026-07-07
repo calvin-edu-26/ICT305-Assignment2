@@ -1,0 +1,20 @@
+Climate Change Knowledge Portal:  Historical Data
+The World Bank
+"December 1, 2011"
+"This workbook contains historical temperature and precipitation data derived from the Climate Research Unit (Mitchell et al, 2003), aggregated to the country and basin levels.  The time period for all data in this workbook is 1961-1999.  More data is available via the Climate Data API, documented at http://data.worldbank.org/developers/climate-data-api."
+
+This workbook contains four (4) spreadsheets:
+Country_precipitationCRU:  mean monthly and annual precipitation by country for the period 1961-1999.  Values are in millimeters (mm).
+Country_temperatureCRU:  mean monthly and annual temperatures by country for the period 1961-1999.  Values are in degrees Celsius.
+Basin_precipitationCRU:  mean monthly and annual precipitation by major water basin for the period 1961-1999.  Values are in millimeters (mm).
+Basin_temperatureCRU:  mean monthly and annual temperatures by major water basin for the period 1961-1999.  Values are in degrees Celsius.
+
+
+COLUMN LAYOUT FOR COUNTRY TABLES
+"ISO_3DIGIT:  3-digit ISO country code, where available"
+"The remaining columns contain mean values for each month, as indicated by the column headers."
+
+
+COLUMN LAYOUT FOR BASIN TABLES
+WBHUC:  the basin ID
+The remaining columns are the same as those on the country spreadsheets.

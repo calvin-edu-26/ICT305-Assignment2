@@ -1,0 +1,16 @@
+﻿Climate Change Knowledge Portal:  Ensemble Projections
+The World Bank
+"December 1, 2011"
+"This workbook contains “ensemble” temperature and precipitation data derived from multiple global circulation models (GCMs), aggregated to the country level for months and years in four future time periods.  The ensemble data depict the range (10th percentile, median and 90th percentile) of model outputs run under each of two scenarios, A2 and B1.  More data is available via the Climate Data API, documented at http://data.worldbank.org/developers/climate-data-api."
+""
+This workbook contains four (4) spreadsheets:
+"Change_pr:  average monthly change in precipitation, compared to a control period of 1961-1999.  Values are in millimeters (mm)."
+Change_temp:  average monthly change in temperature compared to a control period of 1961-1999.  Values are in degrees Celsius.
+Mean_pr:  average monthly precipitation.  Values are in millimeters (mm).
+Change_pr:  average monthly temperature. Values are in degrees Celsius.
+""
+""
+Each spreadsheet uses the same column layout:
+Column A:  3-digit ISO country code (see http://unstats.un.org/unsd/methods/m49/m49alpha.htm)
+"Column B:  indicates the time period, variable, scenario, month, and percentile for the value in column C.  The variable will be constant within each spreadsheet. Scenario will be either ""a2"" or ""b1"". Month will be 01 (January) through 12 (December).  Percentile will be ""10th"", ""median"" (50th percentile) or ""90th""."
+Column C:  the temperature or precipitation value for the country and combination of parameters indicated in columns A and B.
