@@ -67,9 +67,10 @@ def chart(data: pd.DataFrame, selected_year: int, selected_subregions: list):
             showframe=False,
             showcoastlines=True,
             coastlinecolor="lightgrey",
-            projection_type="natural earth",
+            projection_type="equirectangular",  # Flat 2D map — no dragging
             bgcolor="rgba(0,0,0,0)",
         ),
+        dragmode=False,                          # Disable map dragging
         coloraxis_colorbar=dict(
             title="Vulnerability<br>Score",
             tickvals=[round(vmin, 2), round((vmin + vmax) / 2, 2), round(vmax, 2)],
@@ -78,7 +79,6 @@ def chart(data: pd.DataFrame, selected_year: int, selected_subregions: list):
                 f"{(vmin + vmax) / 2:.2f}",
                 f"{vmax:.2f} (95th pct)",
             ],
-            len=0.75,
         ),
         margin=dict(l=0, r=0, t=50, b=0),
         title_font_size=16,
