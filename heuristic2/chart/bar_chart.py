@@ -1,5 +1,6 @@
 import pandas as pd
 import plotly.express as px
+from heuristic2.constants import SUBREGION_COLOURS
 
 # ── COUNTRY NAME CLEANING ─────────────────────────────────────────────────────
 # Exact strings as they appear in the ND-GAIN dataset.
@@ -66,16 +67,8 @@ def chart(data: pd.DataFrame, selected_year: int):
         x="vulnerability",
         y="display_name",
         orientation="h",
-        color="vulnerability",
-        color_continuous_scale=[
-            [0.0, "#FFFFB2"],
-            [0.5, "#FD8D3C"],
-            [1.0, "#BD0026"],
-        ],
-        range_color=[
-            data["vulnerability"].quantile(0.05),
-            data["vulnerability"].quantile(0.95),
-        ],
+        color="subregion",
+        color_discrete_map=SUBREGION_COLOURS,
         hover_name="Name",
         hover_data={
             "display_name": False,
@@ -123,7 +116,6 @@ def chart(data: pd.DataFrame, selected_year: int):
             showgrid=True,
             gridcolor="rgba(200,200,200,0.3)",
         ),
-        coloraxis_showscale=False,
         margin=dict(l=10, r=20, t=70, b=40),
         title_font_size=15,
         plot_bgcolor="rgba(0,0,0,0)",

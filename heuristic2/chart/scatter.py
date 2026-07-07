@@ -1,27 +1,7 @@
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-
-# ── FIXED SUB-REGION COLOUR PALETTE ──────────────────────────────────────────
-# Fixed colours ensure each sub-region always maps to the same colour
-# regardless of filtering. Designed for readability on dark backgrounds.
-SUBREGION_COLOURS = {
-    "Northern Africa":           "#FFD700",
-    "Sub-Saharan Africa":        "#FF6B35",
-    "Northern America":          "#4FC3F7",
-    "Latin America & Caribbean": "#81C784",
-    "Central Asia":              "#CE93D8",
-    "Eastern Asia":              "#80DEEA",
-    "South-eastern Asia":        "#FFB74D",
-    "Southern Asia":             "#F48FB1",
-    "Western Asia":              "#BCAAA4",
-    "Eastern Europe":            "#90CAF9",
-    "Northern Europe":           "#FFFFFF",
-    "Southern Europe":           "#A5D6A7",
-    "Western Europe":            "#B39DDB",
-    "Oceania":                   "#80CBC4",
-    "Other":                     "#757575",
-}
+from heuristic2.constants import SUBREGION_COLOURS
 
 
 def chart(
