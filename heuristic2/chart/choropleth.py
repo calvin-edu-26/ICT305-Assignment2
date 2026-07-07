@@ -82,7 +82,6 @@ def chart(data: pd.DataFrame, selected_year: int, selected_subregions: list):
         ),
         margin=dict(l=0, r=0, t=50, b=0),
         title_font_size=16,
-        title_x=0.5,
     )
 
     return fig
