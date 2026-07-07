@@ -21,7 +21,7 @@ def render(recommendations: list[Recommendation]):
         List of Recommendation dataclass instances. Written in page.py, not here.
     """
     with st.container(border=True):
-        st.markdown("**♦ WHAT YOU CAN DO**")
+        st.markdown("**Recommended Actions**")
         for rec in recommendations:
             st.markdown(f"**{rec.audience}**")
             for action in rec.recommendations:
