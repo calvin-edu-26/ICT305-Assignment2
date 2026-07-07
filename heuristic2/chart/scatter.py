@@ -161,7 +161,6 @@ def chart(data: pd.DataFrame, selected_year: int, selected_subregions: list, sel
         coloraxis_showscale=False,
         margin=dict(l=40, r=20, t=50, b=40),
         title_font_size=16,
-        title_x=0.5,
         plot_bgcolor="rgba(0,0,0,0)",
         paper_bgcolor="rgba(0,0,0,0)",
     )
