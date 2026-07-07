@@ -2,8 +2,36 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
+# ── FIXED SUB-REGION COLOUR PALETTE ──────────────────────────────────────────
+# Fixed colours ensure each sub-region always maps to the same colour
+# regardless of filtering. Designed for readability on dark backgrounds.
+SUBREGION_COLOURS = {
+    "Northern Africa":           "#FFD700",
+    "Sub-Saharan Africa":        "#FF6B35",
+    "Northern America":          "#4FC3F7",
+    "Latin America & Caribbean": "#81C784",
+    "Central Asia":              "#CE93D8",
+    "Eastern Asia":              "#80DEEA",
+    "South-eastern Asia":        "#FFB74D",
+    "Southern Asia":             "#F48FB1",
+    "Western Asia":              "#BCAAA4",
+    "Eastern Europe":            "#90CAF9",
+    "Northern Europe":           "#FFFFFF",
+    "Southern Europe":           "#A5D6A7",
+    "Western Europe":            "#B39DDB",
+    "Oceania":                   "#80CBC4",
+    "Other":                     "#757575",
+}
 
-def chart(data: pd.DataFrame, selected_year: int, selected_subregions: list, selected_country: str):
+
+def chart(
+    data: pd.DataFrame,
+    selected_year: int,
+    selected_subregions: list,
+    selected_country: str,
+    show_medians: bool = True,
+    color_mode: str = "vulnerability",
+):
     """
     Builds a scatter plot of vulnerability score vs CO₂ per capita.
 
@@ -18,6 +46,11 @@ def chart(data: pd.DataFrame, selected_year: int, selected_subregions: list, sel
         Empty list means all sub-regions shown.
     selected_country : str
         Country name to highlight. "None" means no highlight.
+    show_medians : bool
+        If True, draws median reference lines. Default True.
+    color_mode : str
+        "vulnerability" — colour by vulnerability score (Yellow→Red)
+        "subregion"     — colour by UN sub-region (fixed palette)
 
     Returns
     -------
@@ -25,7 +58,6 @@ def chart(data: pd.DataFrame, selected_year: int, selected_subregions: list, sel
     """
 
     # ── PERCENTILE-BASED COLOUR RANGE ─────────────────────────────────────────
-    # Matches choropleth colour scale for visual consistency across both charts.
     vmin = data["vulnerability"].quantile(0.05)
     vmax = data["vulnerability"].quantile(0.95)
 
@@ -33,8 +65,6 @@ def chart(data: pd.DataFrame, selected_year: int, selected_subregions: list, sel
     snapshot = data[data["year"] == selected_year].copy()
 
     # ── RESOLVE COUNTRY HIGHLIGHT BEFORE SUB-REGION FILTER ───────────────────
-    # Must be extracted before sub-region filtering so the selected country
-    # is always highlighted even if its region is filtered out.
     df_highlight = None
     if selected_country and selected_country != "None":
         df_highlight = snapshot[snapshot["Name"] == selected_country].copy()
@@ -47,63 +77,88 @@ def chart(data: pd.DataFrame, selected_year: int, selected_subregions: list, sel
     snapshot = snapshot.dropna(subset=["co2_per_capita", "vulnerability"])
 
     # ── BUILD SCATTER PLOT ────────────────────────────────────────────────────
-    fig = px.scatter(
-        snapshot,
-        x="co2_per_capita",
-        y="vulnerability",
-        color="vulnerability",
-        color_continuous_scale=[
-            [0.0, "#FFFFB2"],
-            [0.5, "#FD8D3C"],
-            [1.0, "#BD0026"],
-        ],
-        range_color=[vmin, vmax],
-        hover_name="Name",
-        hover_data={
-            "vulnerability": ":.3f",
-            "co2_per_capita": ":.2f",
-            "subregion": True,
-            "year": False,
-        },
-        labels={
-            "co2_per_capita": "CO₂ per Capita (tonnes)",
-            "vulnerability": "Vulnerability Score",
-            "subregion": "Sub-Region",
-        },
-        title=f"Climate Vulnerability vs CO₂ Emissions per Capita ({selected_year})",
-        opacity=0.8,
-    )
+    if color_mode == "subregion":
+        fig = px.scatter(
+            snapshot,
+            x="co2_per_capita",
+            y="vulnerability",
+            color="subregion",
+            color_discrete_map=SUBREGION_COLOURS,
+            hover_name="Name",
+            hover_data={
+                "vulnerability": ":.3f",
+                "co2_per_capita": ":.2f",
+                "subregion": True,
+                "year": False,
+            },
+            labels={
+                "co2_per_capita": "CO₂ per Capita (tonnes)",
+                "vulnerability": "Vulnerability Score",
+                "subregion": "Sub-Region",
+            },
+            title=f"Climate Vulnerability vs CO₂ Emissions per Capita ({selected_year})",
+            opacity=0.8,
+        )
+    else:
+        # Default — colour by vulnerability score
+        fig = px.scatter(
+            snapshot,
+            x="co2_per_capita",
+            y="vulnerability",
+            color="vulnerability",
+            color_continuous_scale=[
+                [0.0, "#FFFFB2"],
+                [0.5, "#FD8D3C"],
+                [1.0, "#BD0026"],
+            ],
+            range_color=[vmin, vmax],
+            hover_name="Name",
+            hover_data={
+                "vulnerability": ":.3f",
+                "co2_per_capita": ":.2f",
+                "subregion": True,
+                "year": False,
+            },
+            labels={
+                "co2_per_capita": "CO₂ per Capita (tonnes)",
+                "vulnerability": "Vulnerability Score",
+                "subregion": "Sub-Region",
+            },
+            title=f"Climate Vulnerability vs CO₂ Emissions per Capita ({selected_year})",
+            opacity=0.8,
+        )
 
     # ── QUADRANT REFERENCE LINES ──────────────────────────────────────────────
-    # Median lines divide the plot into four analytical quadrants.
-    # Top-left quadrant (high vulnerability, low emissions) is the injustice zone
-    # that directly supports the Big Idea narrative.
-    median_co2 = snapshot["co2_per_capita"].median()
-    median_vuln = snapshot["vulnerability"].median()
+    # Only rendered if show_medians is True.
+    if show_medians:
+        median_co2 = snapshot["co2_per_capita"].median()
+        median_vuln = snapshot["vulnerability"].median()
 
-    fig.add_vline(
-        x=median_co2,
-        line_dash="dash",
-        line_color="grey",
-        line_width=1,
-        annotation_text=f"Median CO₂: {median_co2:.1f}t",
-        annotation_position="top right",
-        annotation_font_size=11,
-        annotation_font_color="grey",
-    )
+        fig.add_vline(
+            x=median_co2,
+            line_dash="dash",
+            line_color="grey",
+            line_width=1,
+            annotation_text=f"Median CO₂: {median_co2:.1f}t",
+            annotation_position="top right",
+            annotation_font_size=11,
+            annotation_font_color="grey",
+        )
 
-    fig.add_hline(
-        y=median_vuln,
-        line_dash="dash",
-        line_color="grey",
-        line_width=1,
-        annotation_text=f"Median Vulnerability: {median_vuln:.2f}",
-        annotation_position="bottom right",
-        annotation_font_size=11,
-        annotation_font_color="grey",
-    )
+        fig.add_hline(
+            y=median_vuln,
+            line_dash="dash",
+            line_color="grey",
+            line_width=1,
+            annotation_text=f"Median Vulnerability: {median_vuln:.2f}",
+            annotation_position="bottom right",
+            annotation_font_size=11,
+            annotation_font_color="grey",
+        )
 
-    # Top-left quadrant label — injustice zone
+    # ── INJUSTICE ZONE ANNOTATION ─────────────────────────────────────────────
+    # Always visible regardless of median toggle —
+    # it labels the analytical purpose of the top-left quadrant.
     fig.add_annotation(
         x=0, y=1,
         xref="paper", yref="paper",

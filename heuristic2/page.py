@@ -63,8 +63,35 @@ def exploratory_analysis_section():
         "a specific country."
     )
 
+    # ── SCATTER PLOT INLINE TOGGLES ───────────────────────────────────────────
+    # Placed directly above the chart so changes are immediately visible.
+    tog_col1, tog_col2 = st.columns(2)
+
+    with tog_col1:
+        show_medians = st.toggle(
+            "Show Median Guide Lines",
+            value=True,
+            help="Toggle the median CO₂ and vulnerability reference lines on or off."
+        )
+
+    with tog_col2:
+        color_mode = st.radio(
+            "Colour By",
+            options=["Vulnerability Score", "Sub-Region"],
+            index=0,
+            horizontal=True,
+            help="Switch between colouring dots by vulnerability score or by UN sub-region."
+        )
+
     st.plotly_chart(
-        scatter.chart(data, selected_year, selected_subregions, selected_country),
+        scatter.chart(
+            data,
+            selected_year,
+            selected_subregions,
+            selected_country,
+            show_medians=show_medians,
+            color_mode="vulnerability" if color_mode == "Vulnerability Score" else "subregion",
+        ),
         use_container_width=True
     )
     st.caption(f"{NDGAIN_REF} | {OWID_REF}")
