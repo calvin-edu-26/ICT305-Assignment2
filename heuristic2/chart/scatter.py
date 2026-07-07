@@ -156,23 +156,6 @@ def chart(
             annotation_font_color="grey",
         )
 
-    # ── INJUSTICE ZONE ANNOTATION ─────────────────────────────────────────────
-    # Always visible regardless of median toggle —
-    # it labels the analytical purpose of the top-left quadrant.
-    fig.add_annotation(
-        x=0, y=1,
-        xref="paper", yref="paper",
-        text="⚠️ High Vulnerability<br>Low Emissions",
-        showarrow=False,
-        font=dict(size=11, color="#BD0026"),
-        align="left",
-        xanchor="left",
-        yanchor="top",
-        bgcolor="rgba(255,255,255,0.6)",
-        bordercolor="#BD0026",
-        borderwidth=1,
-    )
-
     # ── COUNTRY HIGHLIGHT ─────────────────────────────────────────────────────
     if df_highlight is not None and not df_highlight.empty:
         df_highlight = df_highlight.dropna(subset=["co2_per_capita", "vulnerability"])
