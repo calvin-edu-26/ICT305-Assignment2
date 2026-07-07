@@ -3,7 +3,7 @@ import streamlit as st
 from heuristic2.loaders import ndgain
 from heuristic2.chart import choropleth, scatter, bar_chart
 from heuristic2.components import insight, recommendation
-from heuristic2.components.recommendation import Recommendation
+from heuristic2.components.recommendation import DecisionCard
 
 # ── DATA LOADING ──────────────────────────────────────────────────────────────
 data = ndgain.load()
@@ -156,61 +156,99 @@ def decision_support_section():
 
     st.divider()
 
-    # ── 3. DYNAMIC RECOMMENDED ACTIONS ───────────────────────────────────────
+    # ── DYNAMIC RECOMMENDED ACTIONS ───────────────────────────────────────────
+    # 2x2 grid — one card per strategic decision identified above.
+    # Content switches at the 2010 threshold based on validated data shifts.
+    st.markdown("**Recommended Actions**")
     threshold = get_threshold(selected_year)
 
     if threshold == "pre_2010":
         recommendation.render([
-            Recommendation(
-                audience="UN Climate Adaptation Fund",
-                recommendations=[
-                    "Prioritise adaptation finance to Sub-Saharan African nations — "
-                    "particularly Niger, Somalia, Chad, and Mali — which consistently "
-                    "rank as most vulnerable despite negligible emissions.",
-                    "Establish dedicated small island state programmes for nations "
-                    "like Micronesia and Solomon Islands, which face existential "
-                    "climate threats despite contributing less than 1.6 tonnes CO₂ "
-                    "per capita.",
-                ]
+            DecisionCard(
+                decision="Prioritisation of Adaptation Funding",
+                action=(
+                    "Direct adaptation finance urgently to **Niger**, **Somalia**, "
+                    "**Chad**, and **Mali** — consistently the most vulnerable "
+                    "low-emitting nations in this period despite contributing less "
+                    "than 0.06 tonnes CO₂ per capita. Establish dedicated small "
+                    "island state programmes for **Micronesia** and **Solomon Islands**, "
+                    "which face existential threats despite near-zero emissions."
+                )
             ),
-            Recommendation(
-                audience="IPCC Working Group II",
-                recommendations=[
-                    "Prioritise regional vulnerability assessments for West and "
-                    "Central Africa, where multiple nations simultaneously rank in "
-                    "the top 15 most vulnerable low-emitting countries.",
-                    "Investigate why Bangladesh and Maldives rank highly in this "
-                    "period — both face acute climate exposure that warrants targeted "
-                    "research into adaptation pathways.",
-                ]
+            DecisionCard(
+                decision="Regional Intervention Planning",
+                action=(
+                    "Coordinate a regional response across **West and Central Africa**, "
+                    "where multiple nations simultaneously rank in the top 15 most "
+                    "vulnerable low-emitting countries. A nation-by-nation approach "
+                    "is insufficient — systemic regional vulnerability requires "
+                    "coordinated policy and funding mechanisms."
+                )
+            ),
+            DecisionCard(
+                decision="Progress Monitoring",
+                action=(
+                    "Investigate **Bangladesh** and **Maldives** — both rank highly "
+                    "in this period despite ongoing development efforts. Establish "
+                    "baseline vulnerability metrics now to enable meaningful "
+                    "progress tracking as adaptation interventions are introduced "
+                    "over the coming decades."
+                )
+            ),
+            DecisionCard(
+                decision="Accountability Assessment",
+                action=(
+                    "High-emitting nations must demonstrate measurable action to "
+                    "reduce the vulnerability of low-emitting nations they "
+                    "disproportionately affect. The concentration of vulnerability "
+                    "in Sub-Saharan Africa — a region responsible for under 2% of "
+                    "global emissions — must be formally documented in UNFCCC "
+                    "accountability frameworks."
+                )
             ),
         ])
     else:
         recommendation.render([
-            Recommendation(
-                audience="UN Climate Adaptation Fund",
-                recommendations=[
-                    "Urgently reassess Somalia's adaptation funding — its rise to "
-                    "the top vulnerability rank since 2010 signals a deteriorating "
-                    "situation requiring immediate international support.",
-                    "Investigate the newly entered nations — DR Congo, Uganda, "
-                    "Eritrea, and São Tomé & Príncipe — to determine whether their "
-                    "entry into the top 15 reflects worsening climate exposure or "
-                    "declining adaptive capacity, and respond accordingly.",
-                ]
+            DecisionCard(
+                decision="Prioritisation of Adaptation Funding",
+                action=(
+                    "Urgently reassess **Somalia's** adaptation funding — its rise "
+                    "to the top vulnerability rank since 2010 signals a deteriorating "
+                    "situation. Investigate **DR Congo**, **Uganda**, **Eritrea**, "
+                    "and **São Tomé & Príncipe** — newly entered nations whose "
+                    "worsening relative position requires immediate funding review."
+                )
             ),
-            Recommendation(
-                audience="IPCC Working Group II",
-                recommendations=[
-                    "Document the relative improvement of Bangladesh, Maldives, "
-                    "Vanuatu, and Burkina Faso as potential case studies in "
-                    "successful adaptation, and identify which policies drove "
-                    "their vulnerability reduction.",
-                    "Assess the widening gap between the global median CO₂ per "
-                    "capita (now above 2.6 tonnes) and the emissions of the top 15 "
-                    "most vulnerable nations (below 0.5 tonnes) as evidence for "
-                    "strengthening the Loss and Damage framework under the UNFCCC.",
-                ]
+            DecisionCard(
+                decision="Regional Intervention Planning",
+                action=(
+                    "Sub-Saharan Africa remains dominant across the top 15 — a "
+                    "coordinated regional response across **Central and East Africa** "
+                    "is now critical. Individual country programmes are insufficient; "
+                    "a unified regional adaptation framework is needed to address "
+                    "systemic vulnerability."
+                )
+            ),
+            DecisionCard(
+                decision="Progress Monitoring",
+                action=(
+                    "Document **Bangladesh**, **Maldives**, **Vanuatu**, and "
+                    "**Burkina Faso** — all dropped out of the top 15 since 1995 — "
+                    "as adaptation case studies. Identify which specific policies "
+                    "and investments drove their relative vulnerability reduction "
+                    "and apply these lessons to currently worsening nations."
+                )
+            ),
+            DecisionCard(
+                decision="Accountability Assessment",
+                action=(
+                    "The global median CO₂ per capita has risen above **2.6 tonnes**, "
+                    "while the top 15 most vulnerable nations remain below **0.5 tonnes**. "
+                    "This widening gap must be used to strengthen the **Loss and "
+                    "Damage framework** under the UNFCCC — holding high-emitting "
+                    "nations formally accountable for consequences borne by those "
+                    "least responsible."
+                )
             ),
         ])
 
