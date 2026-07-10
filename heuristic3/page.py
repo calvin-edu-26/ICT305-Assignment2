@@ -98,7 +98,7 @@ INCOME_ORDER = ["Low Income","Lower Middle Income","Upper Middle Income","High I
 # ─────────────────────────────────────────────
 # DATA LOADING
 # ─────────────────────────────────────────────
-BASE = os.path.join(os.path.dirname(__file__), "..", "data")
+BASE = os.path.join(os.path.dirname(__file__), "data")
 
 @st.cache_data(show_spinner="Loading datasets…")
 def load_data():
