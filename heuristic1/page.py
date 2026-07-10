@@ -55,7 +55,7 @@ def overview_section():
     ])
 
     recommendation.render([
-        Recommendation("Ministries of Foreign Affaris & Climate Trade Negotiators (High-Emitting Nations)", [
+        Recommendation("Ministries of Foreign Affairs & Climate Trade Negotiators (High-Emitting Nations)", [
             "**Establish \"Green Trade Channels\"**: Partner with high-emitting countries as collaborative effort to expedite border processing targetting clean technologies, increasing accessibility and affordability of those equipments.",
             "**Tie International Aid to Clean Energy**: Structure agreements to fund solar or wind power rather than coal-dependent projects for financial aid and infrastructure loans to developing countries.",
             "**Implement Graduated Import Fees**: Introduce border fees on raw industrial imports (like cement or metal) that involves carbon-emitting production cycle, encourage transition towards green energy.",
