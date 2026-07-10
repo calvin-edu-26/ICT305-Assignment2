@@ -42,7 +42,7 @@ MEMBERS = [
         "student_id": "35614306",
         "email": "35614306@student.murdoch.edu.au",
         "sub_heuristic": "Extreme Weather & Economic Damage",
-        "photo": "about/assets/lam.jpg",
+        "photo": "about/assets/LTC.jpg",
     },
     {
         "name": "Lucas Lord Eivan De Leon",
