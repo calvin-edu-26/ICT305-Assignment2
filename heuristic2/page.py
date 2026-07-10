@@ -136,11 +136,11 @@ def insight_highlights_section():
         insight.render(
             f"In **{selected_year}**, **Niger** ranks as the most vulnerable "
             "low-emitting nation, with a vulnerability score consistently above 0.69 "
-            "despite contributing less than 0.06 tonnes of CO₂ per capita — "
-            "well below the global median. **Micronesia** appears in the top 3, "
+            "despite contributing less than 0.06 tonnes of CO₂ per capita. "
+            "This is well below the global median. **Micronesia** appears in the top 3, "
             "highlighting how small island states face existential climate risks "
             "despite near-zero emissions. Sub-Saharan Africa dominates the list, "
-            "with the top 15 averaging a vulnerability score of 0.619 — "
+            "with the top 15 averaging a vulnerability score of 0.619, "
             "significantly above the global median."
         )
     else:
@@ -150,7 +150,7 @@ def insight_highlights_section():
             "exposure and adaptive capacity. **Chad** has entered the top 3, "
             "displacing Micronesia. Notably, **Bangladesh**, **Maldives**, "
             "**Vanuatu**, and **Burkina Faso** have dropped out of the top 15 "
-            "since 1995 — suggesting marginal relative improvement — while "
+            "since 1995, suggesting marginal relative improvement while "
             "**DR Congo**, **Uganda**, **Eritrea**, and **São Tomé & Príncipe** "
             "have newly entered, signalling a worsening of their relative position. "
             "The global median CO₂ per capita has risen to over 2.6 tonnes, "
@@ -204,7 +204,7 @@ def decision_support_section():
                 decision="Prioritisation of Adaptation Funding",
                 action=(
                     "Direct adaptation finance urgently to **Niger**, **Somalia**, "
-                    "**Chad**, and **Mali** — consistently the most vulnerable "
+                    "**Chad**, and **Mali**. These are consistently the most vulnerable "
                     "low-emitting nations in this period despite contributing less "
                     "than 0.06 tonnes CO₂ per capita. Establish dedicated small "
                     "island state programmes for **Micronesia** and **Solomon Islands**, "
@@ -217,14 +217,14 @@ def decision_support_section():
                     "Coordinate a regional response across **West and Central Africa**, "
                     "where multiple nations simultaneously rank in the top 15 most "
                     "vulnerable low-emitting countries. A nation-by-nation approach "
-                    "is insufficient — systemic regional vulnerability requires "
+                    "is insufficient as systemic regional vulnerability requires "
                     "coordinated policy and funding mechanisms."
                 )
             ),
             DecisionCard(
                 decision="Progress Monitoring",
                 action=(
-                    "Investigate **Bangladesh** and **Maldives** — both rank highly "
+                    "Investigate **Bangladesh** and **Maldives**. Both rank highly "
                     "in this period despite ongoing development efforts. Establish "
                     "baseline vulnerability metrics now to enable meaningful "
                     "progress tracking as adaptation interventions are introduced "
@@ -248,17 +248,17 @@ def decision_support_section():
             DecisionCard(
                 decision="Prioritisation of Adaptation Funding",
                 action=(
-                    "Urgently reassess **Somalia's** adaptation funding — its rise "
+                    "Urgently reassess **Somalia's** adaptation funding. Its rise "
                     "to the top vulnerability rank since 2010 signals a deteriorating "
                     "situation. Investigate **DR Congo**, **Uganda**, **Eritrea**, "
-                    "and **São Tomé & Príncipe** — newly entered nations whose "
+                    "and **São Tomé & Príncipe**. These are newly entered nations whose "
                     "worsening relative position requires immediate funding review."
                 )
             ),
             DecisionCard(
                 decision="Regional Intervention Planning",
                 action=(
-                    "Sub-Saharan Africa remains dominant across the top 15 — a "
+                    "Sub-Saharan Africa remains dominant across the top 15. A "
                     "coordinated regional response across **Central and East Africa** "
                     "is now critical. Individual country programmes are insufficient; "
                     "a unified regional adaptation framework is needed to address "
@@ -269,8 +269,8 @@ def decision_support_section():
                 decision="Progress Monitoring",
                 action=(
                     "Document **Bangladesh**, **Maldives**, **Vanuatu**, and "
-                    "**Burkina Faso** — all dropped out of the top 15 since 1995 — "
-                    "as adaptation case studies. Identify which specific policies "
+                    "**Burkina Faso** all dropped out of the top 15 since 1995 "
+                    "as adaptation case studies suggests. Identify which specific policies "
                     "and investments drove their relative vulnerability reduction "
                     "and apply these lessons to currently worsening nations."
                 )
@@ -281,7 +281,7 @@ def decision_support_section():
                     "The global median CO₂ per capita has risen above **2.6 tonnes**, "
                     "while the top 15 most vulnerable nations remain below **0.5 tonnes**. "
                     "This widening gap must be used to strengthen the **Loss and "
-                    "Damage framework** under the UNFCCC — holding high-emitting "
+                    "Damage framework** under the UNFCCC, holding high-emitting "
                     "nations formally accountable for consequences borne by those "
                     "least responsible."
                 )
