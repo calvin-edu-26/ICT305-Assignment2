@@ -501,6 +501,24 @@ def build_country_dataset():
     return df
 
 # ============================================================
+# KPI FUNCTION
+# Used by the Overview page to display Heuristic 4's KPI.
+# ============================================================
+
+@st.cache_data
+def get_critical_risk_count():
+    """
+    Returns the total number of countries classified
+    as Critical Risk.
+    """
+
+    country_df = build_country_dataset()
+
+    return int(
+        (country_df["risk_zone"] == "Critical Risk").sum()
+    )
+
+# ============================================================
 # CHART STYLE HELPER
 # Applies consistent layout to every Plotly chart.
 # ============================================================
