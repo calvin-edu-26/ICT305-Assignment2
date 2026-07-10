@@ -346,7 +346,7 @@ with st.container(border=True):
         "relative to global peers. Toggle the **Median Guide Lines** on or off, and "
         "switch between **Vulnerability Score** and **Sub-Region** colouring to explore "
         "different dimensions of the data. Cross-reference the choropleth map, scatter "
-        "plot, and bar chart together — each view illuminates a different dimension "
+        "plot, and bar chart together. Each view illuminates a different dimension "
         "of the same injustice."
     )
 
