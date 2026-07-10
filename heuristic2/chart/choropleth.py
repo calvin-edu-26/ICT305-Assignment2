@@ -55,9 +55,9 @@ def chart(data: pd.DataFrame, selected_year: int, selected_subregions: list):
         ],
         range_color=[vmin, vmax],
         labels={
-            "vulnerability": "Vulnerability Score",
-            "co2_per_capita": "CO₂ per Capita (tonnes)",
-            "subregion": "Sub-Region",
+            "vulnerability": "Vulnerability Score ",
+            "co2_per_capita": "CO₂ per Capita (tonnes) ",
+            "subregion": "Sub-Region ",
         },
         title=f"Global Climate Vulnerability Score ({selected_year})",
     )
