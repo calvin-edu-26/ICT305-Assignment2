@@ -2,6 +2,7 @@ import streamlit as st
 
 from heuristic1.loaders.owid import load as load_owid
 from heuristic2.loaders.ndgain import load as load_ndgain
+from heuristic4.page import get_critical_risk_count
 from heuristic5.loaders.data_loader import load_provider_finance_data
 
 # ── DATA LOADING ──────────────────────────────────────────────────────────────
@@ -106,12 +107,13 @@ with kpi3:
     )
 
 with kpi4:
-    # Lucas — Sea Level Rise
-    # TODO: Replace with computed metric from Lucas's dataset
+    # Lucas — Sea Level Rise & Displacement
+    critical_risk_count = get_critical_risk_count()
+
     st.metric(
-        label="Sea Level Rise",
-        value="—",
-        help="Lucas's metric — to be added."
+        label="Critical Risk Countries",
+        value=critical_risk_count,
+        help="Countries with high displacement pressure and lower economic capacity."
     )
 
 with kpi5:
