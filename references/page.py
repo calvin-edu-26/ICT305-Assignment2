@@ -41,7 +41,6 @@ st.markdown("""
 | Sub-heuristic | Member | Status |
 |---|---|---|
 | Extreme Weather & Economic Damage | Lam | To be confirmed |
-| Sea Level Rise & Displacement | Lucas | To be confirmed |
 | Climate Finance Gap | Nengjie | To be confirmed |
 """)
 
