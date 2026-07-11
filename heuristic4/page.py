@@ -228,47 +228,59 @@ def story_header(number, title, subtitle):
 # Creates a reusable insights and analysis box.
 def insight_box(insights, analysis, conclusion=None):
 
-    bullets = "".join(f"<li>{item}</li>" for item in insights)
+    bullets = "".join(
+        f"<li>{item}</li>"
+        for item in insights
+    )
 
     conclusion_html = ""
+
     if conclusion:
         conclusion_html = f"""
-    <h3 style="margin-top:22px;">Key Takeaway</h3>
-    <p style="
-        font-size:20px;
-        font-weight:700;
-        color:var(--text-color);
-        line-height:1.5;
-    ">
-    {conclusion}
-    </p>
-    """
+<h3 style="margin-top:22px;">Key Takeaway</h3>
+<p style="font-size:20px;font-weight:700;color:var(--text-color);line-height:1.5;">
+{conclusion}
+</p>
+"""
 
-    st.markdown(f"""
+    st.markdown(
+        f"""
 <div class="story-box">
 <h3>🔍 Insights</h3>
+
 <ul>
 {bullets}
 </ul>
 
 <h3>📊 Analysis</h3>
+
 <p>{analysis}</p>
 
 {conclusion_html}
 </div>
-""", unsafe_allow_html=True)
+""",
+        unsafe_allow_html=True
+    )
 
 def recommendation_box(recommendations):
-    bullets = "".join(f"<li>{item}</li>" for item in recommendations)
 
-    st.markdown(f"""
+    bullets = "".join(
+        f"<li>{item}</li>"
+        for item in recommendations
+    )
+
+    st.markdown(
+        f"""
 <div class="story-box">
 <h3>💡 Recommendations</h3>
+
 <ul>
 {bullets}
 </ul>
 </div>
-""", unsafe_allow_html=True)
+""",
+        unsafe_allow_html=True
+    )
 
 # Explains the risk zone colours used in Chart 1.
 def risk_zone_legend():
