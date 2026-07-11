@@ -27,9 +27,11 @@ st.markdown("""
 | Carbon Emissions | Calvin | IEA-EDGAR CO₂ | European Commission Joint Research Centre & IEA | 1970–2024 |
 | Climate Vulnerability | Ruben | ND-GAIN Country Index | Notre Dame Global Adaptation Initiative (ND-GAIN) | 1995–2018 |
 | Climate Vulnerability | Ruben | Our World in Data CO₂ | Our World in Data / Global Carbon Project | 1995–2018 |
-| Sea Level Rise & Displacement | Lucas | Sea Level Rise Projections | World Bank Climate Change Knowledge Portal | Historical + SSP projections to 2150 |
-| Sea Level Rise & Displacement | Lucas | Coastal Population Exposure | Climate Central – Sea Level Explorer | Current estimates |
-| Sea Level Rise & Displacement | Lucas | GDP per Capita & CO₂ Emissions | Our World in Data / World Bank | Latest available |
+| Sea Level Rise & Displacement | Lucas | GDP per Capita | Our World in Data / World Bank | 1960-2024 |
+| Sea Level Rise & Displacement | Lucas | CO₂ Emissions | Our World in Data / World Bank | 1750-2024 |
+| Sea Level Rise & Displacement | Lucas | Coastal Population Exposure | Climate Change Knowledge Portal / World Bank | 2000-2007 |
+| Sea Level Rise & Displacement | Lucas | Population Density | Climate Change Knowledge Portal / World Bank | 2000-2007 |
+| Sea Level Rise & Displacement | Lucas | Sea Level Rise Projections | NASA Sea Level Projection Tool | 2020-2150 |
 """)
 
 st.divider()
