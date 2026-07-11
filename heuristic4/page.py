@@ -66,22 +66,33 @@ COUNTRY_RENAMES = {
 def load_css():
     st.markdown("""
 <style>
+/* =========================================================
+   GENERAL PAGE SPACING
+   ========================================================= */
+
 .block-container {
     padding-top: 2rem;
     padding-bottom: 2rem;
 }
 
+
+/* =========================================================
+   HERO HEADER
+   Keeps its own dark-blue design in both themes.
+   ========================================================= */
+
 .hero {
     padding: 30px;
     border-radius: 22px;
     background: linear-gradient(90deg, #082032, #0F4C75);
-    color: white;
+    color: #ffffff;
     margin-bottom: 25px;
 }
 
 .hero h1 {
     font-size: 42px;
     margin-bottom: 8px;
+    color: #ffffff;
 }
 
 .hero p {
@@ -89,39 +100,79 @@ def load_css():
     color: #dbeafe;
 }
 
+
+/* =========================================================
+   STORY, INSIGHT AND RECOMMENDATION CARDS
+   Uses Streamlit theme variables so light and dark modes work.
+   ========================================================= */
+
 .section-card,
 .story-box {
     padding: 22px;
     border-radius: 18px;
-    border: 1px solid #e5e7eb;
+    border: 1px solid rgba(128, 128, 128, 0.30);
     margin: 18px 0;
+
+    background-color: var(--secondary-background-color);
+    color: var(--text-color);
 }
 
-.section-card {
-    background: white;
-}
 
-.story-box {
-    background: #f8fafc;
-}
-
+/* Headings inside cards */
+.section-card h1,
+.section-card h2,
 .section-card h3,
-.story-box h3 {
-    color: #0f172a;
+.section-card h4,
+.story-box h1,
+.story-box h2,
+.story-box h3,
+.story-box h4 {
+    color: var(--text-color) !important;
     margin-top: 0;
 }
 
+
+/* Paragraphs and list items inside cards */
 .section-card p,
+.section-card li,
 .story-box p,
 .story-box li {
-    color: #475569;
+    color: var(--text-color) !important;
     font-size: 15px;
     line-height: 1.7;
 }
 
+
+/* Bold text must also follow the active theme */
+.section-card b,
+.section-card strong,
+.story-box b,
+.story-box strong {
+    color: var(--text-color) !important;
+}
+
+
+/* Improve list spacing */
+.story-box ul,
+.section-card ul {
+    margin-top: 10px;
+    margin-bottom: 12px;
+    padding-left: 24px;
+}
+
+.story-box li,
+.section-card li {
+    margin-bottom: 7px;
+}
+
+
+/* =========================================================
+   TABS
+   ========================================================= */
+
 .stTabs [data-baseweb="tab-list"] {
     gap: 12px;
-    background: #f1f5f9;
+    background-color: var(--secondary-background-color);
     padding: 12px;
     border-radius: 18px;
     margin-bottom: 20px;
@@ -131,22 +182,29 @@ def load_css():
     height: 55px;
     padding: 12px 20px;
     border-radius: 14px;
-    background: white;
-    border: 1px solid #dbe3ef;
+
+    background-color: var(--background-color);
+    border: 1px solid rgba(128, 128, 128, 0.30);
     font-weight: 700;
-    color: #334155;
+    color: var(--text-color);
 }
 
 .stTabs [aria-selected="true"] {
-    background: #0F4C75 !important;
-    color: white !important;
+    background-color: #0F4C75 !important;
+    color: #ffffff !important;
     border: 1px solid #0F4C75 !important;
 }
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
 
 .footer {
     padding: 20px;
     text-align: center;
-    color: #64748b;
+    color: var(--text-color);
+    opacity: 0.75;
     font-size: 14px;
 }
 </style>
@@ -175,11 +233,16 @@ def insight_box(insights, analysis, conclusion=None):
     conclusion_html = ""
     if conclusion:
         conclusion_html = f"""
-<h3 style="margin-top:22px;">Key Takeaway</h3>
-<p style="font-size:20px;font-weight:700;color:#0f172a;line-height:1.5;">
-{conclusion}
-</p>
-"""
+    <h3 style="margin-top:22px;">Key Takeaway</h3>
+    <p style="
+        font-size:20px;
+        font-weight:700;
+        color:var(--text-color);
+        line-height:1.5;
+    ">
+    {conclusion}
+    </p>
+    """
 
     st.markdown(f"""
 <div class="story-box">
@@ -219,8 +282,8 @@ def risk_zone_legend():
 <div style="display:flex;align-items:flex-start;gap:12px;">
 <div style="width:18px;height:18px;background:#DC2626;border-radius:4px;margin-top:3px;flex-shrink:0;"></div>
 <div>
-<b>Critical Risk</b>
-<p style="margin:6px 0 0 0;color:#475569;">
+<b style="color:var(--text-color);">Critical Risk</b>
+<p style="margin:6px 0 0 0;color:var(--text-color);opacity:0.85;">
 High displacement pressure combined with lower economic capacity.
 These countries need urgent adaptation support.
 </p>
@@ -230,8 +293,8 @@ These countries need urgent adaptation support.
 <div style="display:flex;align-items:flex-start;gap:12px;">
 <div style="width:18px;height:18px;background:#F97316;border-radius:4px;margin-top:3px;flex-shrink:0;"></div>
 <div>
-<b>High Exposure, Higher Capacity</b>
-<p style="margin:6px 0 0 0;color:#475569;">
+<b style="color:var(--text-color);">High Exposure, Higher Capacity</b>
+<p style="margin:6px 0 0 0;color:var(--text-color);opacity:0.85;">
 High exposure but stronger economic ability to invest in adaptation and resilience.
 </p>
 </div>
@@ -524,22 +587,50 @@ def get_critical_risk_count():
 # ============================================================
 
 def clean_fig(fig, height=650):
+    """
+    Applies a consistent Plotly style that automatically
+    adapts to Streamlit Light and Dark mode.
+    """
+
     fig.update_layout(
+
+        # Use Plotly's default template instead of white
+        template="plotly",
+
         height=height,
-        paper_bgcolor="white",
-        plot_bgcolor="white",
-        font=dict(size=14, color="#0f172a"),
-        title=dict(font=dict(size=20, color="#0f172a")),
-        margin=dict(l=20, r=20, t=60, b=60),
+
+        # Transparent backgrounds
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+
+        margin=dict(
+            l=20,
+            r=20,
+            t=60,
+            b=60
+        ),
+
+        font=dict(size=14),
+
+        title=dict(
+            font=dict(size=20)
+        ),
+
         legend=dict(
-            bgcolor="rgba(255,255,255,0.85)",
-            bordercolor="#e5e7eb",
-            borderwidth=1
+            bgcolor="rgba(0,0,0,0)",
+            borderwidth=0
         )
     )
 
-    fig.update_xaxes(showgrid=True, gridcolor="#e5e7eb", zeroline=False)
-    fig.update_yaxes(showgrid=True, gridcolor="#e5e7eb", zeroline=False)
+    fig.update_xaxes(
+        showgrid=True,
+        zeroline=False
+    )
+
+    fig.update_yaxes(
+        showgrid=True,
+        zeroline=False
+    )
 
     return fig
 
@@ -617,11 +708,11 @@ def chart_density_map(df):
     fig.update_geos(
         projection_type="natural earth",
         showcountries=True,
-        countrycolor="#475569",
+        countrycolor="#64748b",
         showcoastlines=True,
         coastlinecolor="#64748b",
         showframe=False,
-        bgcolor="white"
+        bgcolor="rgba(0,0,0,0)"
     )
 
     return clean_fig(fig, height=760)
@@ -902,7 +993,8 @@ def render_tab_1(df, top_n):
 
     st.plotly_chart(
         chart_population_pressure(df, top_n),
-        use_container_width=True
+        use_container_width=True,
+        theme="streamlit"
     )
 
     risk_zone_legend()
@@ -934,7 +1026,8 @@ def render_tab_2(df):
 
     st.plotly_chart(
         chart_density_map(df),
-        use_container_width=True
+        use_container_width=True,
+        theme="streamlit"
     )
 
     insight_box(
@@ -964,7 +1057,8 @@ def render_tab_3(sea_level_df, selected_scenarios):
 
     st.plotly_chart(
         chart_sea_level(sea_level_df, selected_scenarios),
-        use_container_width=True
+        use_container_width=True,
+        theme="streamlit"
     )
 
     insight_box(
@@ -995,7 +1089,8 @@ def render_tab_4(df):
 
     st.plotly_chart(
         chart_adaptation_capacity(df),
-        use_container_width=True
+        use_container_width=True,
+        theme="streamlit"
     )
 
     st.caption(
@@ -1030,7 +1125,8 @@ def render_tab_5(df):
 
     st.plotly_chart(
         chart_risk_matrix(df),
-        use_container_width=True
+        use_container_width=True,
+        theme="streamlit"
     )
 
     insight_box(
