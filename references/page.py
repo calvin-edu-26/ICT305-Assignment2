@@ -52,7 +52,7 @@ with col2:
 st.divider()
 
 # ── EXTREME WEATHER (LAM) ─────────────────────────────────────────────────────
-st.subheader("xtreme Weather & Economic Damage")
+st.subheader("Extreme Weather & Economic Damage")
 
 col1, col2 = st.columns([3, 1])
 with col1:
