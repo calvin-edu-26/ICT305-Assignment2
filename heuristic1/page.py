@@ -1,7 +1,7 @@
 import streamlit as st
 
 from heuristic1.loaders import country_geojson, owid, edgar
-from heuristic1.chart import global_nation_co2_emission, global_emission_trend, bottom_emission_nation_per_capita, top_emission_nation_line, top_emission_nation_per_capita, top_emission_nation_pie, top_emission_nation_sector
+from heuristic1.chart import global_nation_co2_emission, global_emission_trend, bottom_emission_nation_per_capita, top_emission_nation_line, top_emission_nation_per_capita, top_emission_nation_pie, top_emission_nation_sector, style
 from heuristic1.components import insight, recommendation
 from heuristic1.components.recommendation import Recommendation
 
@@ -32,13 +32,15 @@ def overview_section():
         st.caption("Color scale capped at 95th percentile to show distribution. Hover for exact values.")
         
         st.plotly_chart(
-            global_nation_co2_emission.chart(
-                    owid_data, 
-                    country_geojson.load(), 
-                    end_year, 
-                    float(selected_percentile)
-                ), 
-                use_container_width=True,
+            style.compact_style(
+                global_nation_co2_emission.chart(
+                        owid_data, 
+                        country_geojson.load(), 
+                        end_year, 
+                        float(selected_percentile)
+                    ), 
+                ),
+            use_container_width=True,
         )
 
     with top:
@@ -46,7 +48,9 @@ def overview_section():
         st.subheader(f"Top {top_number} Countries by CO₂ Emissions")
 
         st.plotly_chart(
-            top_emission_nation_pie.chart(owid_data, end_year, top_number)
+            style.compact_style(
+                top_emission_nation_pie.chart(owid_data, end_year, top_number)
+            )
         )
 
     st.caption(OWID_REF)
@@ -74,9 +78,11 @@ def global_emission_trend_section():
     st.header(f"Global Emission Trend ({start_year}-{end_year})")
 
     st.plotly_chart(
-        global_emission_trend.chart(
-            owid_data,
-            range(start_year, end_year),
+        style.compact_style(
+            global_emission_trend.chart(
+                owid_data,
+                range(start_year, end_year),
+            )
         )
     )
 
@@ -108,15 +114,19 @@ def top_emission_nations_then_now_section():
     with then:
         st.subheader(f"{start_year}")
         st.plotly_chart(
-            top_emission_nation_line.chart(owid_data, start_year, top_n)
-                .update_layout(height=max(400, top_n * 28))
+            style.compact_style(
+                top_emission_nation_line.chart(owid_data, start_year, top_n)
+                    .update_layout(height=max(400, top_n * 28))
+            )
         )
         
     with now:
         st.subheader(f"{end_year}")
         st.plotly_chart(
-            top_emission_nation_line.chart(owid_data, end_year, top_n)
-                .update_layout(height=max(400, top_n * 28))    
+            style.compact_style(
+                top_emission_nation_line.chart(owid_data, end_year, top_n)
+                    .update_layout(height=max(400, top_n * 28))    
+            )
         )
 
     st.caption(OWID_REF)
@@ -147,15 +157,19 @@ def top_n_bottom_emission_nations_section():
 
     with top:
         st.plotly_chart(
-            top_emission_nation_per_capita.chart(owid_data, end_year, n)
-                .update_layout(height=max(400, n * 28)),
+            style.compact_style(
+                top_emission_nation_per_capita.chart(owid_data, end_year, n)
+                    .update_layout(height=max(400, n * 28)),
+            ),
             use_container_width=True
         )
 
     with bottom:
         st.plotly_chart(
-            bottom_emission_nation_per_capita.chart(owid_data, end_year, n)
-                .update_layout(height=max(400, n * 28)),
+            style.compact_style(
+                bottom_emission_nation_per_capita.chart(owid_data, end_year, n)
+                    .update_layout(height=max(400, n * 28)),
+            )
         )
 
     st.caption(OWID_REF)
@@ -183,8 +197,10 @@ def top_emission_nation_sector_section():
     st.header(f"Top {n} Emitting Nations - Sector Breakdown ({end_year})")
 
     st.plotly_chart(
-        top_emission_nation_sector.chart(edgar_data, end_year, n)
-            .update_layout(height=max(400, n * 28))
+        style.compact_style(
+            top_emission_nation_sector.chart(edgar_data, end_year, n)
+                .update_layout(height=max(400, n * 28))
+        )
     )
 
     st.caption(EDGAR_REF)
