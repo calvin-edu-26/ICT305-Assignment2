@@ -12,6 +12,12 @@ if "playing" not in st.session_state:
     st.session_state.playing = False
 if "anim_year" not in st.session_state:
     st.session_state.anim_year = 2024
+if "scatter_show_medians" not in st.session_state:
+    st.session_state.scatter_show_medians = True
+if "scatter_color_mode" not in st.session_state:
+    st.session_state.scatter_color_mode = "Vulnerability Score"
+if "scatter_country" not in st.session_state:
+    st.session_state.scatter_country = "None"
 
 # ── DATA LOADING ──────────────────────────────────────────────────────────────
 data = ndgain.load()
@@ -56,7 +62,6 @@ def exploratory_analysis_section():
         choropleth.chart(data, selected_year, selected_subregions),
         use_container_width=True
     )
-    st.caption(NDGAIN_REF)
 
     with st.container(border=True):
         st.markdown("**What this chart shows**")
@@ -87,20 +92,23 @@ def exploratory_analysis_section():
 
     tog_col1, tog_col2, tog_col3 = st.columns(3)
     with tog_col1:
+        color_mode_options = ["Vulnerability Score", "Sub-Region"]
         show_medians = st.toggle(
             "Show Median Guide Lines",
-            value=True,
+            value=st.session_state.scatter_show_medians,
             help=(
                 "Draws horizontal and vertical lines at the global median "
                 "vulnerability score and CO2 per capita. Divides the chart "
                 "into four quadrants for easier interpretation."
             )
         )
+        st.session_state.scatter_show_medians = show_medians
+
     with tog_col2:
         color_mode = st.radio(
             "Colour By",
-            options=["Vulnerability Score", "Sub-Region"],
-            index=0,
+            options=color_mode_options,
+            index=color_mode_options.index(st.session_state.scatter_color_mode),
             horizontal=True,
             help=(
                 "Vulnerability Score: colours each country by its vulnerability "
@@ -109,18 +117,22 @@ def exploratory_analysis_section():
                 "to reveal regional clustering patterns."
             )
         )
+        st.session_state.scatter_color_mode = color_mode
+
     with tog_col3:
         all_countries = sorted(data["Name"].unique().tolist())
+        country_options = ["None"] + all_countries
         selected_country = st.selectbox(
             "Highlight Country",
-            options=["None"] + all_countries,
-            index=0,
+            options=country_options,
+            index=country_options.index(st.session_state.scatter_country) if st.session_state.scatter_country in country_options else 0,
             help=(
                 "Select a specific country to highlight its position on the "
                 "scatter plot with a white circle marker. Useful for tracking "
                 "a country of interest relative to global peers."
             )
         )
+        st.session_state.scatter_country = selected_country
 
     st.plotly_chart(
         scatter.chart(
@@ -205,30 +217,26 @@ def insight_highlights_section():
 
     if threshold == "pre_2022":
         insight.render(
-            f"In **{selected_year}**, **Somalia** ranks as the most vulnerable "
-            "low-emitting nation, a position it has held consistently since 1995. "
-            "Despite contributing less than **0.07 tonnes of CO2 per capita** "
-            "far below the global median, Somalia's vulnerability score remains "
-            "above 0.63. **Guinea-Bissau** and **Eritrea** feature persistently in "
-            "the top 3, reflecting deep structural vulnerability across the Horn "
-            "of Africa and West Africa. Sub-Saharan Africa dominates the list, "
-            "with the top 15 averaging a vulnerability score above 0.62, "
-            "significantly above the global median."
+            f"In **{selected_year}**, **Somalia** leads as the most vulnerable "
+            "low-emitting nation with a vulnerability score above 0.63, despite "
+            "contributing less than **0.07 tonnes CO2 per capita**. "
+            "**Guinea-Bissau** consistently ranks second, while the third position "
+            "rotates among **Mauritania**, **Rwanda**, **Micronesia**, and **Eritrea** "
+            "across different years. Sub-Saharan Africa and small island states "
+            "dominate the list, with the top 15 averaging a vulnerability score "
+            "above **0.62**, significantly above the global median of approximately 0.47."
         )
     else:
         insight.render(
-            f"In **{selected_year}**, **Mauritania** has emerged as the most "
-            "vulnerable low-emitting nation, overtaking Somalia for the first time "
-            "in the dataset's history. With a vulnerability score of **0.655** and "
-            "CO2 per capita of just **1.01 tonnes**, Mauritania exemplifies the "
-            "core injustice: high climate exposure with minimal emissions "
-            "responsibility. **Somalia** and **Chad** remain in the top 3. "
-            "Notably, **Malawi**, **Mali**, and **Niger** have dropped out of the "
-            "top 15 since 1995, while **Burundi**, **Sierra Leone**, and **Tonga** "
-            "have newly entered, signalling shifting vulnerability patterns across "
-            "Sub-Saharan Africa and the Pacific. The global median CO2 per capita "
-            "has risen to **2.88 tonnes**, while these 15 nations average below "
-            "**0.5 tonnes**."
+            f"In **{selected_year}**, **Mauritania** has overtaken Somalia as the "
+            "most vulnerable low-emitting nation, with a vulnerability score of "
+            "**0.655** and CO2 per capita of just **1.01 tonnes**. "
+            "**Sudan** has risen to second place, a new entrant in the top 3, "
+            "while **Somalia** falls to third. **Chad**, **Eritrea**, **Yemen**, "
+            "**Solomon Islands**, and **Guinea-Bissau** remain consistent fixtures "
+            "in the top 15. The global median CO2 per capita has risen to "
+            "**2.88 tonnes** by 2024, while the top 15 nations average below "
+            "**0.5 tonnes**, a widening gap that defines the core climate injustice."
         )
 
 
@@ -445,38 +453,15 @@ with st.sidebar:
     # ── GLOSSARY ──────────────────────────────────────────────────────────────
     st.divider()
     with st.expander("📖 Glossary"):
-        st.markdown("""
-**CO₂** — Carbon Dioxide. A greenhouse gas produced by burning fossil fuels, 
-deforestation, and industrial processes. The primary driver of human-caused 
-climate change.
-
-**GDP** — Gross Domestic Product. The total monetary value of all goods and 
-services produced in a country in a given year. Used here to contextualise 
-the economic scale of climate damage.
-
-**GHG** — Greenhouse Gas. Gases that trap heat in the atmosphere, including 
-CO₂, methane (CH₄), and nitrous oxide (N₂O).
-
-**IPCC** — Intergovernmental Panel on Climate Change. A United Nations body 
-that assesses the science related to climate change and its impacts.
-
-**ND-GAIN** — Notre Dame Global Adaptation Initiative. A research index that 
-measures a country's vulnerability to climate change and its readiness to 
-adapt, scored from 0 (least vulnerable/ready) to 1 (most vulnerable/least ready).
-
-**UN** — United Nations. An international organisation founded in 1945 to 
-promote peace, security, and cooperation among nations.
-
-**UNFCCC** — United Nations Framework Convention on Climate Change. An 
-international treaty that provides the framework for global climate action, 
-including the Paris Agreement and the Loss and Damage framework.
-
-**Per Capita** — Per person. Used to normalise metrics by population size, 
-enabling fair comparisons between countries of different sizes.
-
-**Sub-Region** — A geographic grouping of countries based on the United Nations 
-M49 standard (e.g., Sub-Saharan Africa, South-eastern Asia, Oceania).
-        """)
+        st.caption("**CO₂** — Carbon Dioxide. A greenhouse gas produced by burning fossil fuels, deforestation, and industrial processes. The primary driver of human-caused climate change.")
+        st.caption("**GDP** — Gross Domestic Product. The total monetary value of all goods and services produced in a country in a given year. Used here to contextualise the economic scale of climate damage.")
+        st.caption("**GHG** — Greenhouse Gas. Gases that trap heat in the atmosphere, including CO₂, methane (CH₄), and nitrous oxide (N₂O).")
+        st.caption("**IPCC** — Intergovernmental Panel on Climate Change. A United Nations body that assesses the science related to climate change and its impacts.")
+        st.caption("**ND-GAIN** — Notre Dame Global Adaptation Initiative. A research index measuring a country's vulnerability to climate change and its readiness to adapt, scored from 0 (least vulnerable) to 1 (most vulnerable).")
+        st.caption("**UN** — United Nations. An international organisation founded in 1945 to promote peace, security, and cooperation among nations.")
+        st.caption("**UNFCCC** — United Nations Framework Convention on Climate Change. An international treaty providing the framework for global climate action, including the Paris Agreement and the Loss and Damage framework.")
+        st.caption("**Per Capita** — Per person. Used to normalise metrics by population size, enabling fair comparisons between countries of different sizes.")
+        st.caption("**Sub-Region** — A geographic grouping of countries based on the United Nations M49 standard (e.g., Sub-Saharan Africa, South-eastern Asia, Oceania).")
 
 
 # ═════════════════════════════════════════════════════════════════════════════
