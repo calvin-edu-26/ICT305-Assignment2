@@ -9,13 +9,16 @@ from heuristic1.components.recommendation import Recommendation
 owid_data = owid.load()
 edgar_data = edgar.load()
 
+min_year = owid_data["year"].min()
+max_year = owid_data["year"].max()
+
 # Data Source Reference
 OWID_REF = "Source: Our World in Data — CO₂ and Greenhouse Gas Emissions dataset (owid-co2-data.csv)"
 EDGAR_REF = "Source: IEA-EDGAR CO₂ (EDGAR_2025_GHG) — European Commission Joint Research Centre & IEA, September 2025"
 
 # Section
 def overview_section():
-    st.header("Carbon Emissions by Nations")
+    st.header(f"Carbon Emissions by Nations ({end_year})")
     map, top = st.columns([3, 1])
 
     with map:
@@ -32,7 +35,7 @@ def overview_section():
             global_nation_co2_emission.chart(
                     owid_data, 
                     country_geojson.load(), 
-                    selected_year, 
+                    end_year, 
                     float(selected_percentile)
                 ), 
                 use_container_width=True,
@@ -43,7 +46,7 @@ def overview_section():
         st.subheader(f"Top {top_number} Countries by CO₂ Emissions")
 
         st.plotly_chart(
-            top_emission_nation.chart(owid_data, selected_year, top_number)
+            top_emission_nation.chart(owid_data, end_year, top_number)
         )
 
     st.caption(OWID_REF)
@@ -110,9 +113,9 @@ def top_emission_nations_then_now_section():
         )
         
     with now:
-        st.subheader(f"{selected_year}")
+        st.subheader(f"{end_year}")
         st.plotly_chart(
-            top_emission_nation_income_group.chart(owid_data, selected_year, top_n)
+            top_emission_nation_income_group.chart(owid_data, end_year, top_n)
                 .update_layout(height=max(400, top_n * 28))    
         )
 
@@ -138,20 +141,20 @@ def top_emission_nations_then_now_section():
 
 def top_n_bottom_emission_nations_section():
     n = 20
-    st.header(f"Top VS Bottom {n} Carbon Emission Nations")
+    st.header(f"Top VS Bottom {n} Carbon Emission Nations ({end_year})")
 
     top, bottom = st.columns(2, vertical_alignment="top")
 
     with top:
         st.plotly_chart(
-            top_emission_nation_per_capita.chart(owid_data, selected_year, n)
+            top_emission_nation_per_capita.chart(owid_data, end_year, n)
                 .update_layout(height=max(400, n * 28)),
             use_container_width=True
         )
 
     with bottom:
         st.plotly_chart(
-            bottom_emission_nation_per_capita.chart(owid_data, selected_year, n)
+            bottom_emission_nation_per_capita.chart(owid_data, end_year, n)
                 .update_layout(height=max(400, n * 28)),
         )
 
@@ -177,10 +180,10 @@ def top_n_bottom_emission_nations_section():
 
 def top_emission_nation_sector_section():
     n = 20
-    st.header(f"Top {n} Emitting Nations: Annual CO₂ Emissions by Sector")
+    st.header(f"Top {n} Emitting Nations - Sector Breakdown ({end_year})")
 
     st.plotly_chart(
-        top_emission_nation_sector.chart(edgar_data, selected_year, n)
+        top_emission_nation_sector.chart(edgar_data, end_year, n)
             .update_layout(height=max(400, n * 28))
     )
 
@@ -211,19 +214,11 @@ st.set_page_config(layout="wide")
 with st.sidebar:
     st.header("Filters")
 
-    selected_year = st.selectbox(
-        "Year",
-        # TODO: Change to actual year range base on data
-        options=list(range(2024, 2009, -1)),
-        index=0
-    )
-
     start_year, end_year = st.slider(
-        "Year range",
-        # TODO: Change to actual year range base on data
-        1900,
-        2024,
-        (1900, 2024)
+        "Year Range",
+        min_year,
+        max_year,
+        (min_year, max_year)
     )
 
 overview_section()
