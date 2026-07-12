@@ -1,4 +1,4 @@
-﻿from pathlib import Path
+from pathlib import Path
 import sys
 
 import streamlit as st
@@ -16,6 +16,8 @@ from charts.historical_emissions import render_historical_emissions
 from charts.oecd_dac_history import render_oecd_dac_history
 from charts.overview import render_overview
 from charts.recipient_finance import render_recipient_finance
+from components import insight, recommendation
+from components.recommendation import Recommendation
 from loaders.data_loader import (
     load_climate_indicator_data,
     load_country_temperature_data,
@@ -29,13 +31,7 @@ from loaders.data_loader import (
 )
 
 
-st.set_page_config(
-    page_title="Heuristic 5 | Climate Finance Gap",
-    page_icon="",
-    layout="wide",
-)
-
-
+# Data Source
 try:
     provider_finance = load_provider_finance_data()
 except ImportError as exc:
@@ -47,112 +43,220 @@ except ImportError as exc:
     st.stop()
 
 
-st.title("Heuristic 5: Climate Finance Gap")
-st.caption("A decision-support dashboard for checking whether major providers are delivering enough adaptation finance to vulnerable recipients.")
-
-st.info(
-    "Recommended flow: start with the main finance gap, then check recipient-side delivery, then use risk and global context to support your explanation."
+# Data Source Reference
+OECD_PROVIDER_REF = (
+    "Source: OECD climate-related development finance - provider perspective "
+    "(CRDF-PP_compact.csv)"
 )
+OECD_RECIPIENT_REF = (
+    "Source: OECD climate-related development finance - recipient perspective "
+    "(CRDF-RP_compact.csv)"
+)
+VULNERABILITY_REF = (
+    "Source: Development Initiatives vulnerability, ODA, and climate finance dataset "
+    "(Climate_vulnerability_climate_finance_ODA_and_protracted_crisis.csv)"
+)
+OWID_REF = "Source: Our World in Data - CO2 and greenhouse gas emissions (owid-co2-data.csv)"
+OECD_DAC_REF = (
+    "Source: OECD DAC adaptation and mitigation finance compiled data "
+    "(oecd_dac_climate_finance_2009_2019_compiled.csv)"
+)
+WORLD_BANK_REF = (
+    "Source: World Bank Climate Change Knowledge Portal and World Development Indicators"
+)
+HISTORICAL_EMISSIONS_REF = "Source: Historical greenhouse gas emissions dataset (historical_emissions.csv)"
 
-with st.expander("How to use this dashboard", expanded=False):
-    st.write(
-        "1. Choose the dashboard section from the sidebar.\n"
-        "2. Filter years, provider countries, and recipient regions.\n"
-        "3. Use the main dashboard to compare adaptation finance, mitigation finance, and provider responsibility.\n"
-        "4. Use the context sections only when you need supporting evidence for climate risk or global trends."
+
+def filter_provider_finance():
+    filtered_data = provider_finance[
+        provider_finance["year"].between(year_range[0], year_range[1])
+        & provider_finance["provider"].isin(selected_providers)
+        & provider_finance["region"].isin(selected_regions)
+    ].copy()
+
+    if filtered_data.empty:
+        st.warning("No records match the selected filters. Adjust the year, provider, or region controls.")
+        st.stop()
+
+    return filtered_data
+
+
+# Section
+def overview_section(filtered_data):
+    st.header("Climate Finance Gap")
+    st.caption(
+        "A decision-support dashboard for checking whether major providers are delivering enough "
+        "adaptation finance to vulnerable recipients."
     )
 
-with st.sidebar:
-    st.header("Dashboard Flow")
-    section = st.radio(
-        "Dashboard section",
-        [
-            "Main Finance Gap",
-            "Recipient Finance",
-            "Risk & Global Context",
-            "Data Sources",
-        ],
-        index=0,
-    )
+    render_overview(filtered_data)
+    st.caption(OECD_PROVIDER_REF)
 
-    st.header("Filters")
-    min_year, max_year = int(provider_finance["year"].min()), int(provider_finance["year"].max())
-    year_range = st.slider("Commitment year range", min_year, max_year, (max(min_year, 2018), max_year))
+    insight.render([
+        "Climate finance should not be judged only by total committed dollars; the key equity question is whether enough money is reaching adaptation needs.",
+        "A high mitigation total can still leave climate-vulnerable countries under-supported when adaptation finance remains a smaller share of commitments.",
+        "The selected year range and provider filters allow stakeholders to test whether major donors are improving their adaptation commitment over time.",
+    ])
 
-    default_providers = [
-        provider
-        for provider in ["United States", "Germany", "Japan", "France", "United Kingdom", "Canada", "Italy", "Australia"]
-        if provider in set(provider_finance["provider"])
-    ]
-    selected_providers = st.multiselect(
-        "Provider countries",
-        sorted(provider_finance["provider"].dropna().unique()),
-        default=default_providers or sorted(provider_finance["provider"].dropna().unique())[:8],
-    )
-
-    selected_regions = st.multiselect(
-        "Recipient regions",
-        sorted(provider_finance["region"].dropna().unique()),
-        default=sorted(provider_finance["region"].dropna().unique()),
-    )
+    recommendation.render([
+        Recommendation("UN Climate Finance Negotiators", [
+            "Use adaptation share as a headline accountability measure alongside total climate finance.",
+            "Request provider-level reporting that separates adaptation, mitigation, and overlapping climate finance commitments.",
+            "Prioritise follow-up with providers whose total climate finance is high but adaptation share remains low.",
+        ]),
+        Recommendation("Climate Finance Analysts", [
+            "Compare finance trends over multiple years instead of relying on a single commitment year.",
+            "Track whether adaptation finance grows in vulnerable regions rather than only in easier-to-fund mitigation projects.",
+        ]),
+    ])
 
 
-    st.divider()
+def provider_and_region_section(filtered_data):
+    st.header("Provider Commitments and Recipient Regions")
+
+    providers, regions, recipients = render_exploration(filtered_data)
+    st.caption(OECD_PROVIDER_REF)
+
+    insight.render([
+        "Provider totals reveal who is committing the largest amount of climate finance, while adaptation share shows whether that finance is aligned with climate resilience.",
+        "Regional allocation exposes whether finance is concentrated in a few recipient regions or distributed toward places with larger adaptation needs.",
+        "Recipient-level adaptation versus mitigation patterns help identify countries receiving climate finance that may not match their resilience priorities.",
+    ])
+
+    recommendation.render([
+        Recommendation("Development Finance Institutions", [
+            "Set minimum adaptation-share benchmarks for portfolios that serve highly exposed regions.",
+            "Review recipient regions with high climate risk but comparatively low adaptation finance commitments.",
+            "Use recipient-level scatter patterns to find countries where mitigation-heavy support should be balanced with resilience funding.",
+        ]),
+        Recommendation("Recipient Governments", [
+            "Use the provider and region comparison to identify which donors are most likely to support adaptation programmes.",
+            "Frame funding requests around concrete adaptation gaps rather than broad climate finance needs.",
+        ]),
+    ])
+
+    return providers, regions, recipients
 
 
+def finance_gap_section(filtered_data, providers, regions, recipients):
+    st.header("Emitter Responsibility and Adaptation Gap")
 
-filtered = provider_finance[
-    provider_finance["year"].between(year_range[0], year_range[1])
-    & provider_finance["provider"].isin(selected_providers)
-    & provider_finance["region"].isin(selected_regions)
-].copy()
-
-if filtered.empty:
-    st.warning("No records match the selected filters. Adjust the year, provider, or region controls.")
-    st.stop()
-
-if section == "Main Finance Gap":
     vulnerability = load_vulnerability_data()
     owid_emissions = load_owid_emissions_data()
-    st.subheader("Step 1: Main Finance Gap")
-    st.write("Use this section to identify whether selected providers are directing enough climate finance toward adaptation.")
-    render_overview(filtered)
-    providers, regions, recipients = render_exploration(filtered)
     render_gap_insights(
         providers=providers,
         regions=regions,
         recipients=recipients,
         emissions=owid_emissions,
         vulnerability=vulnerability,
-        filtered=filtered,
+        filtered=filtered_data,
     )
-    render_decision_support(providers)
+    st.caption(f"{OWID_REF} | {VULNERABILITY_REF} | {OECD_PROVIDER_REF}")
 
-elif section == "Recipient Finance":
+    insight.render([
+        "The emissions comparison links provider responsibility to adaptation support, showing whether large emitters are contributing proportionally to resilience finance.",
+        "Funding-per-capita patterns can reveal vulnerable countries that receive limited support even when climate exposure is high.",
+        "Sector-level adaptation finance shows whether commitments are aimed at practical resilience needs such as water, agriculture, disaster risk, and infrastructure.",
+    ])
+
+    recommendation.render([
+        Recommendation("Loss and Damage Fund Administrators", [
+            "Use emissions responsibility and adaptation delivery together when prioritising provider follow-up.",
+            "Flag high-emitting providers with low adaptation-per-emissions support for stronger contribution discussions.",
+            "Direct new funding windows toward vulnerable countries with low funding per capita.",
+        ]),
+        Recommendation("National Climate Planning Teams", [
+            "Connect adaptation funding requests to measurable vulnerability indicators.",
+            "Separate urgent resilience sectors from mitigation projects when preparing donor proposals.",
+        ]),
+    ])
+
+
+def decision_support_section(providers):
+    st.header("Decision Support")
+
+    render_decision_support(providers)
+    st.caption(OECD_PROVIDER_REF)
+
+    insight.render([
+        "The decision table turns the dashboard into a provider comparison tool for identifying strong and weak adaptation performers.",
+        "Providers with large total finance but low adaptation share are priority cases for policy dialogue.",
+    ])
+
+    recommendation.render([
+        Recommendation("Policy Advisors", [
+            "Rank providers by adaptation share before preparing negotiation briefs.",
+            "Use the table to identify which providers require evidence-based follow-up on adaptation commitments.",
+        ]),
+        Recommendation("Programme Managers", [
+            "Use provider-level totals to shortlist likely partners for adaptation-focused projects.",
+            "Pair financial scale with adaptation share so large but mitigation-heavy providers are not mistaken for resilience leaders.",
+        ]),
+    ])
+
+
+def recipient_finance_section():
+    st.header("Recipient Finance and Historical OECD DAC Trends")
+
     recipient_finance = load_recipient_finance_data()
     oecd_dac_history = load_oecd_dac_compiled_data()
-    st.subheader("Step 2: Recipient Finance")
-    st.write("Use this section to check which recipients receive climate finance and how earlier OECD DAC adaptation and mitigation finance changed over time.")
     render_recipient_finance(recipient_finance, year_range, selected_regions)
     render_oecd_dac_history(oecd_dac_history)
+    st.caption(f"{OECD_RECIPIENT_REF} | {OECD_DAC_REF}")
 
-elif section == "Risk & Global Context":
+    insight.render([
+        "Recipient-side data checks whether committed finance is visible from the perspective of the countries and regions receiving support.",
+        "Historical OECD DAC trends provide context for whether adaptation has been catching up with mitigation over time.",
+        "A recipient view helps avoid judging climate finance only from donor announcements.",
+    ])
+
+    recommendation.render([
+        Recommendation("Recipient Country Ministries", [
+            "Compare provider-perspective and recipient-perspective finance before relying on headline donor totals.",
+            "Use historical DAC trends to argue for sustained adaptation support, not one-year increases.",
+        ]),
+        Recommendation("International NGOs", [
+            "Monitor whether finance reaches countries facing repeated climate shocks.",
+            "Use recipient evidence to support advocacy for transparent climate finance delivery.",
+        ]),
+    ])
+
+
+def risk_and_global_context_section():
+    st.header("Climate Risk and Global Context")
+
     vulnerability = load_vulnerability_data()
     world_bank_context = load_world_bank_context_data()
     country_temperature = load_country_temperature_data()
     climate_indicators = load_climate_indicator_data()
     historical_emissions = load_historical_emissions_data()
-    st.subheader("Step 3: Risk & Global Context")
-    st.write("Use this section when you need supporting evidence about climate exposure, global development trends, and historical emissions.")
+
     render_climate_risk_context(country_temperature, climate_indicators, vulnerability)
     render_global_context(world_bank_context)
     render_historical_emissions(historical_emissions)
+    st.caption(f"{VULNERABILITY_REF} | {WORLD_BANK_REF} | {HISTORICAL_EMISSIONS_REF}")
 
-else:
-    st.subheader("Data References")
-    st.write(
-        "Datasets used by Heuristic 5 and the dashboard sections they support."
-    )
+    insight.render([
+        "Climate risk context explains why adaptation finance is an equity issue rather than only a budget issue.",
+        "World Bank and historical emissions indicators connect current finance decisions to wider development capacity and long-term responsibility.",
+        "Combining finance, risk, and emissions evidence supports stronger recommendations than a finance-only view.",
+    ])
+
+    recommendation.render([
+        Recommendation("UN and IPCC Working Groups", [
+            "Use risk indicators to justify adaptation finance targets for highly exposed countries.",
+            "Combine development capacity with historical responsibility when discussing fair provider contributions.",
+            "Treat climate finance as part of climate justice evidence, not only as aid accounting.",
+        ]),
+        Recommendation("Research Teams", [
+            "Use global context indicators to explain why similar finance totals can have different effects across regions.",
+            "Document where historical emitters and current finance providers diverge.",
+        ]),
+    ])
+
+
+def data_references_section():
+    st.header("Data References")
     st.dataframe(
         [
             {
@@ -216,14 +320,43 @@ else:
         hide_index=True,
     )
 
-st.caption(
-    "Data sources include OECD climate-related development finance, Development Initiatives vulnerability data, "
-    "Our World in Data emissions, converted World Bank climate data, World Development Indicators, and historical emissions data."
-)
+
+# Layout
+st.set_page_config(layout="wide")
+with st.sidebar:
+    st.header("Filters")
+
+    min_year, max_year = int(provider_finance["year"].min()), int(provider_finance["year"].max())
+    year_range = st.slider(
+        "Commitment year range",
+        min_year,
+        max_year,
+        (max(min_year, 2018), max_year),
+    )
+
+    default_providers = [
+        provider
+        for provider in ["United States", "Germany", "Japan", "France", "United Kingdom", "Canada", "Italy", "Australia"]
+        if provider in set(provider_finance["provider"])
+    ]
+    selected_providers = st.multiselect(
+        "Provider countries",
+        sorted(provider_finance["provider"].dropna().unique()),
+        default=default_providers or sorted(provider_finance["provider"].dropna().unique())[:8],
+    )
+
+    selected_regions = st.multiselect(
+        "Recipient regions",
+        sorted(provider_finance["region"].dropna().unique()),
+        default=sorted(provider_finance["region"].dropna().unique()),
+    )
 
 
+filtered = filter_provider_finance()
 
-
-
-
-
+overview_section(filtered)
+providers_view, regions_view, recipients_view = provider_and_region_section(filtered)
+finance_gap_section(filtered, providers_view, regions_view, recipients_view)
+decision_support_section(providers_view)
+recipient_finance_section()
+risk_and_global_context_section()
