@@ -105,18 +105,12 @@ with col1:
 | OECD Climate-Related Development Finance - Provider Perspective | OECD | 2013–2024 |
 | OECD Climate-Related Development Finance - Recipient Perspective | OECD | 2001–2024 |
 | Climate Vulnerability, ODA and Climate Finance | Development Initiatives | Latest available |
-| Our World in Data CO₂ | Our World in Data / Global Carbon Project | 1750–2024 |
 | OECD DAC Adaptation and Mitigation Finance | OECD DAC | 2009–2019 |
-| World Bank Climate Change Indicators | Climate Change Knowledge Portal / World Bank | 1990–2008 |
-| World Development Indicators | World Bank | Latest available |
-| Historical Greenhouse Gas Emissions | Climate Watch / World Resources Institute | 1990–2023 |
 """)
 with col2:
     st.link_button("Download OECD Climate Finance", "https://www.oecd.org/en/topics/climate-related-development-finance.html", use_container_width=True)
     st.link_button("Download Dev Initiatives Data", "https://devinit.org/", use_container_width=True)
-    st.link_button("Download OWID CO₂", "https://github.com/owid/co2-data", use_container_width=True)
-    st.link_button("Download World Bank WDI", "https://databank.worldbank.org/source/world-development-indicators", use_container_width=True)
-    st.link_button("Download Historical GHG", "https://www.climatewatchdata.org/ghg-emissions", use_container_width=True)
+    st.link_button("Download OECD DAC Finance", "https://www.oecd.org/dac/financing-sustainable-development/development-finance-topics/climate-change.htm", use_container_width=True)
 
 st.divider()
 
