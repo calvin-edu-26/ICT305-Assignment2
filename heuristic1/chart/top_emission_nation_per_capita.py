@@ -1,5 +1,6 @@
 import pandas as pd
 import plotly.express as px
+import streamlit as st
 
 def chart(data: pd.DataFrame, year: int, top_n: int):
     snapshot = data[data["year"] == year]
@@ -19,6 +20,7 @@ def chart(data: pd.DataFrame, year: int, top_n: int):
         line_dash="dash",
         line_color="red",
         annotation_text=f"Mean: {mean:.1f}t",
+        annotation_font_color=st.get_option("theme.primaryColor")
     )
 
     fig.update_layout(
