@@ -40,18 +40,14 @@ st.markdown("""
 | Climate Finance Gap | Nengjie | World Bank Climate Change Indicators | Climate Change Knowledge Portal / World Bank | 1990-2008 |
 | Climate Finance Gap | Nengjie | World Development Indicators | World Bank | Available World Bank indicator years |
 | Climate Finance Gap | Nengjie | Historical Greenhouse Gas Emissions | Historical greenhouse gas emissions dataset | 1990-2023 |
+| Extreme Weather & Economic Damage | Lam | Annual Deaths from Natural Disasters | EM-DAT / CRED, UCLouvain — via Our World in Data | 1900–2025 |
+| Extreme Weather & Economic Damage | Lam | Economic Damage as % of GDP from Natural Disasters | EM-DAT / CRED, UCLouvain — via Our World in Data | 1960–2024 |
+| Extreme Weather & Economic Damage | Lam | Number of Natural Disaster Events | EM-DAT / CRED, UCLouvain — via Our World in Data | 1900–2025 |
+| Extreme Weather & Economic Damage | Lam | CO₂ and Greenhouse Gas Emissions | Our World in Data / Global Carbon Project | 1750–2024 |
+| Extreme Weather & Economic Damage | Lam | World Bank Income Classifications | World Bank Country and Lending Groups | Latest available |
 """)
 
 st.divider()
-
-# ── PENDING DATASETS ──────────────────────────────────────────────────────────
-st.subheader("Pending Confirmation")
-
-st.markdown("""
-| Sub-heuristic | Member | Status |
-|---|---|---|
-| Extreme Weather & Economic Damage | Lam | To be confirmed |
-""")
 
 st.divider()
 
