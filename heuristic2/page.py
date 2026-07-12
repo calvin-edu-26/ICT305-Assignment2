@@ -9,7 +9,7 @@ from heuristic2.components.recommendation import DecisionCard
 data = ndgain.load()
 
 # ── DATA SOURCE REFERENCES ────────────────────────────────────────────────────
-NDGAIN_REF = "Source: ND-GAIN Country Index — Notre Dame Global Adaptation Initiative via Kaggle (1995–2018)"
+NDGAIN_REF = "Source: ND-GAIN Country Index — Notre Dame Global Adaptation Initiative (1995–2024)"
 OWID_REF = "Source: Our World in Data — CO₂ and Greenhouse Gas Emissions dataset (owid-co2-data.csv)"
 
 
@@ -17,11 +17,11 @@ OWID_REF = "Source: Our World in Data — CO₂ and Greenhouse Gas Emissions dat
 def get_threshold(year: int) -> str:
     """
     Returns the threshold period for the selected year.
-    Two meaningful shifts identified from data validation:
-        - Pre-2010  : Niger leads, Micronesia in top 3
-        - 2010+     : Somalia leads, Chad replaces Micronesia
+    Two meaningful shifts identified from data validation (1995–2024):
+        - Pre-2022  : Somalia consistently leads as most vulnerable low-emitting nation
+        - 2022+     : Mauritania emerges as new leader, overtaking Somalia
     """
-    return "pre_2010" if year < 2010 else "from_2010"
+    return "pre_2022" if year < 2022 else "from_2022"
 
 
 # ═════════════════════════════════════════════════════════════════════════════
@@ -68,10 +68,12 @@ def exploratory_analysis_section():
     tog_col1, tog_col2, tog_col3 = st.columns(3)
 
     with tog_col1:
-        show_medians = st.toggle(
-            "Show Median Guide Lines",
-            value=True,
-            help="Toggle the median CO₂ and vulnerability reference lines on or off."
+        all_countries = sorted(data["Name"].unique().tolist())
+        selected_country = st.selectbox(
+            "🔍 Highlight Country",
+            options=["None"] + all_countries,
+            index=0,
+            help="Select a country to highlight its position on the scatter plot."
         )
 
     with tog_col2:
@@ -84,12 +86,10 @@ def exploratory_analysis_section():
         )
 
     with tog_col3:
-        all_countries = sorted(data["Name"].unique().tolist())
-        selected_country = st.selectbox(
-            "🔍 Highlight Country",
-            options=["None"] + all_countries,
-            index=0,
-            help="Select a country to highlight its position on the scatter plot."
+        show_medians = st.toggle(
+            "Show Median Guide Lines",
+            value=True,
+            help="Toggle the median CO₂ and vulnerability reference lines on or off."
         )
 
     st.plotly_chart(
@@ -132,29 +132,32 @@ def insight_highlights_section():
     # ── DYNAMIC INSIGHT TEXT ──────────────────────────────────────────────────
     threshold = get_threshold(selected_year)
 
-    if threshold == "pre_2010":
+    if threshold == "pre_2022":
         insight.render(
-            f"In **{selected_year}**, **Niger** ranks as the most vulnerable "
-            "low-emitting nation, with a vulnerability score consistently above 0.69 "
-            "despite contributing less than 0.06 tonnes of CO₂ per capita. "
-            "This is well below the global median. **Micronesia** appears in the top 3, "
-            "highlighting how small island states face existential climate risks "
-            "despite near-zero emissions. Sub-Saharan Africa dominates the list, "
-            "with the top 15 averaging a vulnerability score of 0.619, "
+            f"In **{selected_year}**, **Somalia** ranks as the most vulnerable "
+            "low-emitting nation, a position it has held consistently since 1995. "
+            "Despite contributing less than **0.07 tonnes of CO₂ per capita** — "
+            "far below the global median — Somalia's vulnerability score remains "
+            "above 0.63. **Guinea-Bissau** and **Eritrea** feature persistently in "
+            "the top 3, reflecting deep structural vulnerability across the Horn "
+            "of Africa and West Africa. Sub-Saharan Africa dominates the list, "
+            "with the top 15 averaging a vulnerability score above 0.62 — "
             "significantly above the global median."
         )
     else:
         insight.render(
-            f"In **{selected_year}**, **Somalia** has overtaken Niger as the most "
-            "vulnerable low-emitting nation, reflecting a worsening of its climate "
-            "exposure and adaptive capacity. **Chad** has entered the top 3, "
-            "displacing Micronesia. Notably, **Bangladesh**, **Maldives**, "
-            "**Vanuatu**, and **Burkina Faso** have dropped out of the top 15 "
-            "since 1995, suggesting marginal relative improvement while "
-            "**DR Congo**, **Uganda**, **Eritrea**, and **São Tomé & Príncipe** "
-            "have newly entered, signalling a worsening of their relative position. "
-            "The global median CO₂ per capita has risen to over 2.6 tonnes, "
-            "yet these nations remain far below 0.5 tonnes."
+            f"In **{selected_year}**, **Mauritania** has emerged as the most "
+            "vulnerable low-emitting nation, overtaking Somalia for the first time "
+            "in the dataset's history. With a vulnerability score of **0.655** and "
+            "CO₂ per capita of just **1.01 tonnes**, Mauritania exemplifies the "
+            "core injustice — high climate exposure with minimal emissions "
+            "responsibility. **Somalia** and **Chad** remain in the top 3. "
+            "Notably, **Malawi**, **Mali**, and **Niger** have dropped out of the "
+            "top 15 since 1995, while **Burundi**, **Sierra Leone**, and **Tonga** "
+            "have newly entered — signalling shifting vulnerability patterns across "
+            "Sub-Saharan Africa and the Pacific. The global median CO₂ per capita "
+            "has risen to **2.88 tonnes**, while these 15 nations average below "
+            "**0.5 tonnes**."
         )
 
 
@@ -194,52 +197,52 @@ def decision_support_section():
 
     # ── DYNAMIC RECOMMENDED ACTIONS ───────────────────────────────────────────
     # 2x2 grid — one card per strategic decision identified above.
-    # Content switches at the 2010 threshold based on validated data shifts.
+    # Content switches at the 2022 threshold based on validated data shifts.
     st.markdown("**Recommended Actions**")
     threshold = get_threshold(selected_year)
 
-    if threshold == "pre_2010":
+    if threshold == "pre_2022":
         recommendation.render([
             DecisionCard(
                 decision="Prioritisation of Adaptation Funding",
                 action=(
-                    "Direct adaptation finance urgently to **Niger**, **Somalia**, "
-                    "**Chad**, and **Mali**. These are consistently the most vulnerable "
-                    "low-emitting nations in this period despite contributing less "
-                    "than 0.06 tonnes CO₂ per capita. Establish dedicated small "
-                    "island state programmes for **Micronesia** and **Solomon Islands**, "
-                    "which face existential threats despite near-zero emissions."
+                    "Direct adaptation finance urgently to **Somalia**, **Chad**, "
+                    "**Guinea-Bissau**, and **Eritrea** — consistently the most "
+                    "vulnerable low-emitting nations across this period. Somalia "
+                    "contributes less than **0.07 tonnes CO₂ per capita** yet "
+                    "maintains the highest vulnerability score in the dataset. "
+                    "Funding must reflect this disproportionate burden."
                 )
             ),
             DecisionCard(
                 decision="Regional Intervention Planning",
                 action=(
-                    "Coordinate a regional response across **West and Central Africa**, "
-                    "where multiple nations simultaneously rank in the top 15 most "
-                    "vulnerable low-emitting countries. A nation-by-nation approach "
-                    "is insufficient as systemic regional vulnerability requires "
-                    "coordinated policy and funding mechanisms."
+                    "Coordinate a regional response across **Sub-Saharan Africa** "
+                    "and the **Horn of Africa**, where multiple nations simultaneously "
+                    "rank in the top 15 most vulnerable low-emitting countries. "
+                    "A nation-by-nation approach is insufficient — systemic regional "
+                    "vulnerability requires coordinated policy and funding mechanisms."
                 )
             ),
             DecisionCard(
                 decision="Progress Monitoring",
                 action=(
-                    "Investigate **Bangladesh** and **Maldives**. Both rank highly "
-                    "in this period despite ongoing development efforts. Establish "
-                    "baseline vulnerability metrics now to enable meaningful "
-                    "progress tracking as adaptation interventions are introduced "
-                    "over the coming decades."
+                    "Establish baseline vulnerability metrics for **Solomon Islands**, "
+                    "**Micronesia**, and **Rwanda** — small island and landlocked "
+                    "nations appearing persistently in the top 15. Track whether "
+                    "adaptation interventions are reducing their vulnerability "
+                    "relative to global peers over time."
                 )
             ),
             DecisionCard(
                 decision="Accountability Assessment",
                 action=(
                     "High-emitting nations must demonstrate measurable action to "
-                    "reduce the vulnerability of low-emitting nations they "
-                    "disproportionately affect. The concentration of vulnerability "
-                    "in Sub-Saharan Africa — a region responsible for under 2% of "
-                    "global emissions — must be formally documented in UNFCCC "
-                    "accountability frameworks."
+                    "reduce vulnerability of low-emitting nations they "
+                    "disproportionately affect. The concentration of top-15 "
+                    "vulnerability in Sub-Saharan Africa — a region responsible "
+                    "for under 2% of global emissions — must be formally documented "
+                    "in UNFCCC accountability frameworks."
                 )
             ),
         ])
@@ -248,42 +251,43 @@ def decision_support_section():
             DecisionCard(
                 decision="Prioritisation of Adaptation Funding",
                 action=(
-                    "Urgently reassess **Somalia's** adaptation funding. Its rise "
-                    "to the top vulnerability rank since 2010 signals a deteriorating "
-                    "situation. Investigate **DR Congo**, **Uganda**, **Eritrea**, "
-                    "and **São Tomé & Príncipe**. These are newly entered nations whose "
-                    "worsening relative position requires immediate funding review."
+                    "Urgently direct resources to **Mauritania** — the newly emerged "
+                    "most vulnerable low-emitting nation as of 2022, with a "
+                    "vulnerability score of 0.655 and CO₂ per capita of just 1.01 "
+                    "tonnes. Reassess **Somalia** and **Chad** funding — both remain "
+                    "in the top 3 and require sustained long-term support."
                 )
             ),
             DecisionCard(
                 decision="Regional Intervention Planning",
                 action=(
-                    "Sub-Saharan Africa remains dominant across the top 15. A "
-                    "coordinated regional response across **Central and East Africa** "
-                    "is now critical. Individual country programmes are insufficient; "
-                    "a unified regional adaptation framework is needed to address "
-                    "systemic vulnerability."
+                    "The emergence of **Mauritania** at the top of the vulnerability "
+                    "rankings signals that West Africa now requires equal prioritisation "
+                    "alongside the Horn of Africa. Newly entered nations — **Burundi**, "
+                    "**Sierra Leone**, and **Tonga** — indicate expanding vulnerability "
+                    "across Central Africa and the Pacific requiring coordinated "
+                    "regional responses."
                 )
             ),
             DecisionCard(
                 decision="Progress Monitoring",
                 action=(
-                    "Document **Bangladesh**, **Maldives**, **Vanuatu**, and "
-                    "**Burkina Faso** all dropped out of the top 15 since 1995 "
-                    "as adaptation case studies suggests. Identify which specific policies "
-                    "and investments drove their relative vulnerability reduction "
-                    "and apply these lessons to currently worsening nations."
+                    "Document **Malawi**, **Mali**, and **Niger** — all dropped out "
+                    "of the top 15 since 1995 — as adaptation case studies. Identify "
+                    "which policies and investments drove their relative vulnerability "
+                    "reduction and apply these lessons to currently worsening nations. "
+                    "Track Mauritania's trajectory closely as a new critical risk country."
                 )
             ),
             DecisionCard(
                 decision="Accountability Assessment",
                 action=(
-                    "The global median CO₂ per capita has risen above **2.6 tonnes**, "
-                    "while the top 15 most vulnerable nations remain below **0.5 tonnes**. "
-                    "This widening gap must be used to strengthen the **Loss and "
-                    "Damage framework** under the UNFCCC, holding high-emitting "
-                    "nations formally accountable for consequences borne by those "
-                    "least responsible."
+                    "The global median CO₂ per capita has reached **2.88 tonnes** "
+                    "by 2024, while the top 15 most vulnerable nations remain below "
+                    "**0.5 tonnes**. This widening gap must strengthen the "
+                    "**Loss and Damage framework** under the UNFCCC — holding "
+                    "high-emitting nations formally accountable for consequences "
+                    "borne by those least responsible."
                 )
             ),
         ])
@@ -301,10 +305,10 @@ with st.sidebar:
     selected_year = st.slider(
         "📅 Year",
         min_value=1995,
-        max_value=2018,
-        value=2018,
+        max_value=2024,
+        value=2024,
         step=1,
-        help="Slide to explore how vulnerability has shifted over time (1995–2018). Contents change specifically pre-2010 vs post-2010."
+        help="Slide to explore how vulnerability has shifted over time (1995–2024)."
     )
 
     all_subregions = sorted(data["subregion"].unique().tolist())
@@ -313,7 +317,7 @@ with st.sidebar:
         options=all_subregions,
         default=[],
         placeholder="All regions shown by default",
-        help="Select one or more UN sub-regions to filter the choropleth and scatterplot charts simultaneously."
+        help="Select one or more UN sub-regions to filter both charts simultaneously."
     )
 
 
@@ -340,13 +344,13 @@ with st.container(border=True):
     st.markdown("**How to Use This Dashboard**")
     st.markdown(
         "Use the **Year slider** in the sidebar to track how climate vulnerability "
-        "has shifted across nations from 1995 to 2018. Apply the **Sub-Region filter** "
+        "has shifted across nations from 1995 to 2024. Apply the **Sub-Region filter** "
         "to focus on specific parts of the world. Use the **Highlight Country** "
         "selector above the scatter plot to assess a specific nation's position "
         "relative to global peers. Toggle the **Median Guide Lines** on or off, and "
         "switch between **Vulnerability Score** and **Sub-Region** colouring to explore "
         "different dimensions of the data. Cross-reference the choropleth map, scatter "
-        "plot, and bar chart together. Each view illuminates a different dimension "
+        "plot, and bar chart together — each view illuminates a different dimension "
         "of the same injustice."
     )
 

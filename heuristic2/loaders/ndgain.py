@@ -112,7 +112,7 @@ UN_SUBREGION_MAP = {
 }
 
 # ── ND-GAIN FILES ─────────────────────────────────────────────────────────────
-# All 6 ND-GAIN CSV files
+# All 6 ND-GAIN indicator CSV files expected in heuristic2/data/
 NDGAIN_FILES = [
     "vulnerability",
     "exposure",
@@ -174,7 +174,7 @@ def load() -> pd.DataFrame:
 
     owid = owid[
         (owid["year"] >= 1995) &
-        (owid["year"] <= 2018)
+        (owid["year"] <= 2024)
     ].copy()
 
     owid = owid.rename(columns={"iso_code": "ISO3"})
