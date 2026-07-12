@@ -56,7 +56,7 @@ def overview_section():
 
     recommendation.render([
         Recommendation("Ministries of Foreign Affairs & Climate Trade Negotiators (High-Emitting Nations)", [
-            "**Establish \"Green Trade Channels\"**: Partner with high-emitting countries as collaborative effort to expedite border processing targetting clean technologies, increasing accessibility and affordability of those equipments.",
+            "**Establish \"Green Trade Channels\"**: Partner with high-emitting countries as collaborative effort to expedite border processing targetting clean technologies, increasing accessibility and affordability of green equipments.",
             "**Tie International Aid to Clean Energy**: Structure agreements to fund solar or wind power rather than coal-dependent projects for financial aid and infrastructure loans to developing countries.",
             "**Implement Graduated Import Fees**: Introduce border fees on raw industrial imports (like cement or metal) that involves carbon-emitting production cycle, encourage transition towards green energy.",
         ]),
@@ -79,6 +79,10 @@ def global_emission_trend_section():
 
     st.caption(OWID_REF)
 
+    insight.render([
+        "Global emissions grew slowly until **1950**. After **1950**, emissions spiked sharply and remained high through **2024**."
+    ])
+
     recommendation.render([
         Recommendation("Ministries of Finance", [
             "**Launch 10-Year Phased Subsidy Shifting**: Create step-by-step plan to slowly reduce tax breaks for fossil fuel drilling, ensuring those funds are reallocated for domestic battery storage grids development.",
@@ -86,9 +90,9 @@ def global_emission_trend_section():
             "**Incentivize Long-Term Corporate Investments**: Offer corporate tax credits to buinesses that invest their private capital in renewal energy projects.",
         ]),
         Recommendation("Energy Quantitative Analysts", [
-            "**Discount Short-Term Anomalies**: Train predictie market alhorithms to ignore brief, crisis-driven economic contractions, preventing false optimism on natural emissions drops.",
+            "**Discount Short-Term Anomalies**: Train predictive market algorithms to ignore brief, crisis-driven economic crashes, preventing false optimism on emissions drops.",
             "**Model Extreme Deployment Targets**: Publish clear, data-backed reports tracking the exact volume of renewable enerfy capacity required annually to maintain current emission level.",
-            "**Provide Transparent Metric Transitions**: Present enerfy market data explicitly linking annual fuel consumption rates directly to the long-term, compounding atmospheric build-up."
+            "**Provide Transparent Metric Transitions**: Present energy market data linking annual fuel consumption directly to the long-term, compounding atmospheric build-up."
         ]),
     ])
 
@@ -115,20 +119,20 @@ def top_emission_nations_then_now_section():
     st.caption(OWID_REF)
 
     insight.render([
-        "In 1900, United States led carbon emission at roughly 2,100 Mt annually. By 2024, China took over and maxes at over 10,000 Mt. Top emission increased by more than **5x** over a century.",
+        "In **1900**, **United States** led carbon emission at roughly **2,100 Mt** annually. By **2024**, **China** took over and maxes at over **10,000 Mt**. Top emission increased by more than **5x** over a century.",
         "Western industrial powers emitted the most in 1900. By 2024, top emission shifted to the manufacturing powerhouses in Asia - **China**, **India**, **Indonesia**, **Thailand**.",
     ])
 
     recommendation.render([
         Recommendation("Multilateral Development Banks", [
-            "**De-Risk Private Renewable Investment**: Use public development funds to absorb the first layer of financial loss on clean energy projects in emerging markets, making it appealing for private investors to fund solar arrays.",
-            "**Provide Lower-Interest Loans for Green Projects**: Offer competitive, below-market interest rates for public infrastructure projects that substitue carbon-heavy alternatives."
+            "**De-Risk Private Renewable Investment**: Use public development funds to absorb the first layer of financial risk on clean energy projects in emerging markets, making it appealing for private investors to fund solar arrays.",
+            "**Provide Lower-Interest Loans for Green Projects**: Offer competitive, below-market interest rates for public infrastructure projects that substitue carbon-heavy systems."
         ]),
         Recommendation("Ministries of Industry & Investment Promotion - Emerging Countries", [
-            "**Enact Green Foreign Direct Investment (FDI) Rules**: Require internaltional corporations expanding factories in the country to build dedicated solar or wind systems to power their new facilities.",
+            "**Enact Green Foreign Direct Investment (FDI) Rules**: Require international corporations expanding factories in the country to build dedicated solar or wind systems to power their new facilities.",
             "**Subsidize Factory Electrification**: Provide state-backed tax credits for domestic factories that replace old fossil-fuel boilers with high-temperature electric heat pumps.",
             "**Establish Low-Carbon Industrial Parks**: Zone new manufacturing zones with shared, pre-installed green infrastructure, such as centralized waste-heat recovery systems and solar microgrids.",
-            "**Mandate Digital Energy Tracking**: Require all mid-sized and large factories to use automated software to track power waste and keep their energy consumption stable as production scales."
+            "**Mandate Digital Energy Tracking**: Require all large factories to use automated software to track power waste and keep their energy consumption stable as production scales."
         ]),
     ])
 
@@ -154,16 +158,16 @@ def top_n_bottom_emission_nations_section():
     st.caption(OWID_REF)
 
     insight.render([
-        "While countries like **China** and the **US** are the top emitters by raw numbers, top 20 list of per capita emission is heavily dominated by small, weathly petro-states - **Qatar**, **Brunei**, **Kuwait**, **Saudi Arabia**.",
+        "While countries like **China** and the **United States** are the top emitters by raw numbers, top 20 list of per capita emission is heavily dominated by small, weathly petro-states - **Qatar**, **Brunei**, **Kuwait**, **Saudi Arabia**.",
         "Qatar, top emitter per capita contributed a staggering **40t** per person a year, which is almost **8x** of global average of **5t**.",
     ])
 
     recommendation.render([
         Recommendation("Ministries of Housing and Urban Planning (High Per-Capita Countries)", [
-            "**Update Building Codes for Climate Reality**: Mandate that new residential and commercial buildings feature thick insulation, double-paned windows, and smart heating/cooling systems.",
+            "**Update Building Codes for Climate Reality**: Mandate that new residential and commercial buildings feature thick insulation, double-paned windows, and smart climate control systems.",
             "**Introduce Tiered Utility Pricing**: Implement a progressive billing systems for electricity and water where baseline usage is highly affordable, but excessive household luxury consumption is taxed at higher rates.",
-            "**Fund Energy-Efficiency Home Rebates**: Provide simple, upfront cash-back incentives for middle-income houseowners who replace old fossil-gas furnaces with modern electric heat pumps.",
-            "**Require Solar Integration on Large Roofs**: Mandate all new massive commercial buildings install rooftop solar panels to power cooling equipments."
+            "**Fund Energy-Efficiency Home Rebates**: Provide simple, upfront cash rebates for middle-income houseowners who installs modern electric heat pumps.",
+            "**Require Solar Integration on Large Roofs**: Mandate all new massive commercial buildings to install rooftop solar panels to power their own climate control systems."
         ]),
         Recommendation("UN Loss & Damage Administrators", [
             "**Apportion Funding Metrics via Cumulative Per-Capita History**: Calculate mandatory donor country contributions based on duration the nation has operated above the global per-capita average.",
@@ -191,14 +195,14 @@ def top_emission_nation_sector_section():
     recommendation.render([
         Recommendation("City Planners", [
             "**Electrify city-owned vehicles**: Swap out public transit buses, garbage trucks, and government vehicles with electric-powered version.",
-            "**Create dedicated bus lanes**: Designate special lanes for public buses to improve travel time, incentivize commuters to take public transport.",
-            "**Plan Self-Sustainable Neighbourhood**: Structure suburbs with staple amenities like groceries, schools, and clinics within walking distance, reducing car dependence.",
-            "**Plant urban tree canopies**: Plant trees along city streets to naturally cool down neighbourhoods, reducing needs of air-condition cooling.",
+            "**Create dedicated bus lanes**: Designate dedeciated lanes for public buses to improve travel time, incentivize commuters to take public transport.",
+            "**Plan Self-Sustainable Neighbourhood**: Structure neighbohoods with staple amenities like groceries, schools, and clinics within walking distance, reducing reliance on cars.",
+            "**Plant urban tree canopies**: Plant trees along city streets to naturally cool neighbourhoods, reducing needs for air-conditioning.",
         ]),
         Recommendation("Fleet Operations Managers & Corporate Logistic Directors", [
             "**Deploy Route Optimization Software**: Mandate the use of GPS-based routing systems to systematically avoid redundant miles, cutting diesel usage.",
-            "**Shift Freight to Electrified Rail**: Cooperate with rail authorities to move heavy cargo containers off long-distance highways onto electric train networks.",
-            "**Enforce Weekly Tire Checks**: Implement mandatory, systematic tire inflation checks across all fleet vehicles, ensuring tires are properly inflated to optimize fuel efficiency.",
+            "**Shift Freight to Electrified Rail**: Cooperate with rail authorities to move heavy cargo off highways onto electric train networks.",
+            "**Enforce Weekly Tire Checks**: Implement mandatory weekly tire inflation checks across all fleet vehicles, ensuring tires are properly inflated to optimize fuel efficiency.",
         ]),
     ])
 
