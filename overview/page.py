@@ -127,7 +127,7 @@ kpi1, kpi2, kpi3, kpi4, kpi5 = st.columns(5)
 with kpi1:
     emissions_value, emissions_delta, emissions_year = get_top10_emissions_share()
     st.metric(
-        label=f"🏭 Top 10 Emitters' Share ({emissions_year})",
+        label=f"Top 10 Emitters' Share ({emissions_year})",
         value=emissions_value,
         delta=emissions_delta,
         delta_color="inverse",
@@ -141,7 +141,7 @@ with kpi1:
 with kpi2:
     most_vuln, vuln_year = get_most_vulnerable()
     st.metric(
-        label=f"⚠️ Most Vulnerable Nation ({vuln_year})",
+        label=f"Most Vulnerable Nation ({vuln_year})",
         value=most_vuln["Name"],
         delta=f"Score: {most_vuln['vulnerability']:.3f} / 1.000",
         delta_color="off",
@@ -156,7 +156,7 @@ with kpi2:
 with kpi3:
     disaster_value, disaster_delta, disaster_year = get_disaster_events_kpi()
     st.metric(
-        label=f"🌪️ Disaster Events ({disaster_year})",
+        label=f"Disaster Events ({disaster_year})",
         value=disaster_value,
         delta=disaster_delta,
         delta_color="inverse",
@@ -170,7 +170,7 @@ with kpi3:
 with kpi4:
     sea_value, sea_delta, sea_year = get_sea_level_kpi()
     st.metric(
-        label=f"🌊 Sea Level Anomaly ({sea_year})",
+        label=f"Sea Level Anomaly ({sea_year})",
         value=sea_value,
         delta=sea_delta,
         delta_color="inverse",
@@ -184,7 +184,7 @@ with kpi4:
 with kpi5:
     finance_value, finance_delta, finance_year = get_climate_finance_kpi()
     st.metric(
-        label=f"💰 Climate Finance ({finance_year})",
+        label=f"Climate Finance ({finance_year})",
         value=finance_value,
         delta=finance_delta,
         help=(
@@ -214,16 +214,22 @@ with st.container(border=True):
         "appear bright in the **Vulnerability** and **Displacement Pressure** "
         "columns, confirming severe climate exposure and high displacement risk. "
         "Yet the same nations appear consistently dark in the **CO2 per Capita** "
-        "column, confirming they bear minimal responsibility for the crisis. "
+        "column, confirming they bear minimal responsibility for the crisis."
+    )
+    st.markdown(
         "The **Disaster Damage % GDP** column reveals that nations like **Chad**, "
         "**Yemen**, **Tonga**, **Vanuatu**, and **Liberia** suffer the greatest "
         "economic losses from extreme weather relative to their GDP, despite "
-        "emitting far below the global average. "
+        "emitting far below the global average."
+    )
+    st.markdown(
         "The **Finance Received per Capita** column highlights a further disparity: "
         "small island states such as **Solomon Islands**, **Tonga**, **Vanuatu**, "
         "and **Kiribati** receive relatively higher per-capita finance due to their "
         "small populations, while larger but equally vulnerable nations like "
-        "**Somalia**, **Chad**, and **Sudan** remain significantly underserved. "
+        "**Somalia**, **Chad**, and **Sudan** remain significantly underserved."
+    )
+    st.markdown(
         "Navigate to each sub-heuristic tab in the sidebar to explore these "
         "dimensions in depth."
     )
