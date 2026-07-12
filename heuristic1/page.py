@@ -1,12 +1,12 @@
 import streamlit as st
 
 from heuristic1.loaders import country_geojson, owid, edgar
-from heuristic1.chart import global_nation_co2_emission, top_emission_nation, global_emission_trend, emission_trend_industry, top_emission_nation_income_group, bottom_emission_nation_per_capita, top_emission_nation_per_capita, top_emission_nation_sector
+from heuristic1.chart import global_nation_co2_emission, global_emission_trend, bottom_emission_nation_per_capita, top_emission_nation_line, top_emission_nation_per_capita, top_emission_nation_pie, top_emission_nation_sector
 from heuristic1.components import insight, recommendation
 from heuristic1.components.recommendation import Recommendation
 
 # Data Source
-owid_data = owid.load()
+owid_data = owid.load().dropna(subset=["co2_including_luc_per_capita"]) # key field for plotting
 edgar_data = edgar.load()
 
 min_year = owid_data["year"].min()
@@ -46,7 +46,7 @@ def overview_section():
         st.subheader(f"Top {top_number} Countries by CO₂ Emissions")
 
         st.plotly_chart(
-            top_emission_nation.chart(owid_data, end_year, top_number)
+            top_emission_nation_pie.chart(owid_data, end_year, top_number)
         )
 
     st.caption(OWID_REF)
@@ -108,14 +108,14 @@ def top_emission_nations_then_now_section():
     with then:
         st.subheader(f"{start_year}")
         st.plotly_chart(
-            top_emission_nation_income_group.chart(owid_data, start_year, top_n)
+            top_emission_nation_line.chart(owid_data, start_year, top_n)
                 .update_layout(height=max(400, top_n * 28))
         )
         
     with now:
         st.subheader(f"{end_year}")
         st.plotly_chart(
-            top_emission_nation_income_group.chart(owid_data, end_year, top_n)
+            top_emission_nation_line.chart(owid_data, end_year, top_n)
                 .update_layout(height=max(400, top_n * 28))    
         )
 
@@ -218,7 +218,7 @@ with st.sidebar:
         "Year Range",
         min_year,
         max_year,
-        (min_year, max_year)
+        (1900, max_year)
     )
 
 overview_section()
