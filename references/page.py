@@ -32,6 +32,14 @@ st.markdown("""
 | Sea Level Rise & Displacement | Lucas | Coastal Population Exposure | Climate Change Knowledge Portal / World Bank | 2000-2007 |
 | Sea Level Rise & Displacement | Lucas | Population Density | Climate Change Knowledge Portal / World Bank | 2000-2007 |
 | Sea Level Rise & Displacement | Lucas | Sea Level Rise Projections | NASA Sea Level Projection Tool | 2020-2150 |
+| Climate Finance Gap | Nengjie | OECD Climate-Related Development Finance - Provider Perspective | OECD | 2013-2024 |
+| Climate Finance Gap | Nengjie | OECD Climate-Related Development Finance - Recipient Perspective | OECD | 2001-2024 |
+| Climate Finance Gap | Nengjie | Climate Vulnerability, ODA and Climate Finance | Development Initiatives | Latest available |
+| Climate Finance Gap | Nengjie | Our World in Data CO₂ | Our World in Data / Global Carbon Project | 1750-2024 |
+| Climate Finance Gap | Nengjie | OECD DAC Adaptation and Mitigation Finance | OECD DAC | 2009-2019 |
+| Climate Finance Gap | Nengjie | World Bank Climate Change Indicators | Climate Change Knowledge Portal / World Bank | 1990-2008 |
+| Climate Finance Gap | Nengjie | World Development Indicators | World Bank | Available World Bank indicator years |
+| Climate Finance Gap | Nengjie | Historical Greenhouse Gas Emissions | Historical greenhouse gas emissions dataset | 1990-2023 |
 """)
 
 st.divider()
@@ -43,7 +51,6 @@ st.markdown("""
 | Sub-heuristic | Member | Status |
 |---|---|---|
 | Extreme Weather & Economic Damage | Lam | To be confirmed |
-| Climate Finance Gap | Nengjie | To be confirmed |
 """)
 
 st.divider()
