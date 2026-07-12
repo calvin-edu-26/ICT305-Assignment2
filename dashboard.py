@@ -19,15 +19,9 @@ about       = st.Page("about/page.py",       title="About the Team",        url_
 # st.navigation() renders Streamlit's native sidebar with all pages listed.
 # Overview is the default landing page (first in the list).
 
-pg = st.navigation([
-    overview,
-    heuristic1,
-    heuristic2,
-    heuristic3,
-    heuristic4,
-    heuristic5,
-    references,
-    about,
-])
+pg = st.navigation({
+    " ": [overview, heuristic1, heuristic2, heuristic3, heuristic4, heuristic5],
+    "  ": [references, about],
+})
 
 pg.run()

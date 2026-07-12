@@ -352,3 +352,8 @@ Data sources: World Bank, Sea Level Explorer, Our World in Data.
 # Streamlit executes this file directly through st.Page().
 st.set_page_config(page_title="Sea Level Rise & Displacement", layout="wide")
 render_climate_dashboard()
+
+st.divider()
+_, next_col = st.columns([15, 2])
+with next_col:
+    st.page_link("heuristic5/page.py", label="Next: Climate Finance →")

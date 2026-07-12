@@ -11,7 +11,7 @@ st.set_page_config(layout="wide")
 
 st.title("About the Team")
 st.markdown(
-    "This dashboard was developed as part of the **ICT305 Data Visualisation "
+    "This dashboard was developed as a group as part of the **ICT305 Data Visualisation "
     "and Simulation** group project at Murdoch University."
 )
 
@@ -79,3 +79,8 @@ for col, member in zip(cols, MEMBERS):
 
 st.divider()
 st.caption("ICT305 — Data Visualisation and Simulation | Murdoch University")
+
+st.divider()
+_, next_col = st.columns([15, 2])
+with next_col:
+    st.page_link("overview/page.py", label="← Back to Overview")

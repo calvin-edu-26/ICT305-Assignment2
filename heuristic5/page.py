@@ -360,3 +360,8 @@ finance_gap_section(filtered, providers_view, regions_view, recipients_view)
 decision_support_section(providers_view)
 recipient_finance_section()
 risk_and_global_context_section()
+
+st.divider()
+_, next_col = st.columns([15, 2])
+with next_col:
+    st.page_link("overview/page.py", label="Back to Overview →")

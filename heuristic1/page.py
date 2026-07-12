@@ -242,3 +242,8 @@ global_emission_trend_section()
 top_emission_nations_then_now_section()
 top_n_bottom_emission_nations_section()
 top_emission_nation_sector_section()
+
+st.divider()
+_, next_col = st.columns([13, 2])
+with next_col:
+    st.page_link("heuristic2/page.py", label="Next: Climate Vulnerability →")

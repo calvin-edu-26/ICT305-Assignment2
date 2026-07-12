@@ -233,3 +233,8 @@ with st.container(border=True):
         "Navigate to each sub-heuristic tab in the sidebar to explore these "
         "dimensions in depth."
     )
+
+st.divider()
+_, next_col = st.columns([8, 2])
+with next_col:
+    st.page_link("heuristic1/page.py", label="Next: Carbon Emissions (Calvin) →")

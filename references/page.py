@@ -125,3 +125,8 @@ st.caption(
     "with each dataset's respective license. "
     "Download links direct to the original data source pages."
 )
+
+st.divider()
+_, next_col = st.columns([15, 2])
+with next_col:
+    st.page_link("about/page.py", label="Next: About the Team →")

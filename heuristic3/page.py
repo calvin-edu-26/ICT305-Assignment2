@@ -906,3 +906,8 @@ def render_extreme_weather_dashboard():
 
 if __name__ == "__main__":
     render_extreme_weather_dashboard()
+
+st.divider()
+_, next_col = st.columns([15, 2])
+with next_col:
+    st.page_link("heuristic4/page.py", label="Next: Sea Level Rise →")
