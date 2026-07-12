@@ -1,5 +1,14 @@
 import streamlit as st
 
+# ── LOGO ──────────────────────────────────────────────────────────────────────
+# Displays the title as a text wordmark at the top of the sidebar, above the
+# navigation links. st.logo() is the only Streamlit call that reliably
+# renders above the nav widget — CSS attempts to resize its image-based
+# preset sizes fought Streamlit's own inline styling and didn't hold, so
+# instead of a picture logo this is a pre-rendered text image sized exactly
+# as intended up front. Regenerate assets/title_logo.png (via PIL) if the
+# wording or size ever needs to change.
+st.logo("assets/title_logo.png", size="large")
 
 
 # ── PAGE DEFINITIONS ──────────────────────────────────────────────────────────
@@ -16,12 +25,24 @@ references  = st.Page("references/page.py",  title="Data References",       url_
 about       = st.Page("about/page.py",       title="About the Team",        url_path="about")
 
 # ── NAVIGATION ────────────────────────────────────────────────────────────────
-# st.navigation() renders Streamlit's native sidebar with all pages listed.
-# Overview is the default landing page (first in the list).
-
+# Passing a dict instead of a flat list groups pages under collapsible
+# section headers in the sidebar. Each key becomes a header; Overview keeps
+# its own header so it isn't visually orphaned above the grouped sections.
 pg = st.navigation({
-    " ": [overview, heuristic1, heuristic2, heuristic3, heuristic4, heuristic5],
-    "  ": [references, about],
+    "": [
+        overview,
+    ],
+    "Sub-Heuristics": [
+        heuristic1,
+        heuristic2,
+        heuristic3,
+        heuristic4,
+        heuristic5,
+    ],
+    "Appendix": [
+        references,
+        about,
+    ],
 })
-
+ 
 pg.run()
