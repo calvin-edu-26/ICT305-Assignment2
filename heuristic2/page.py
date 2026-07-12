@@ -408,7 +408,7 @@ with st.sidebar:
         )
     else:
         selected_year = st.slider(
-            "📅 Year",
+            "Year",
             min_value=1995,
             max_value=2024,
             value=st.session_state.anim_year,
@@ -440,7 +440,7 @@ with st.sidebar:
     # ── SUB-REGION FILTER ─────────────────────────────────────────────────────
     all_subregions = sorted(data["subregion"].unique().tolist())
     selected_subregions = st.multiselect(
-        "🌐 Sub-Region",
+        "Sub-Region",
         options=all_subregions,
         default=[],
         placeholder="All regions shown by default",
@@ -452,7 +452,7 @@ with st.sidebar:
 
     # ── GLOSSARY ──────────────────────────────────────────────────────────────
     st.divider()
-    with st.expander("📖 Glossary"):
+    with st.expander("Glossary"):
         st.caption("**CO₂** — Carbon Dioxide. A greenhouse gas produced by burning fossil fuels, deforestation, and industrial processes. The primary driver of human-caused climate change.")
         st.caption("**GDP** — Gross Domestic Product. The total monetary value of all goods and services produced in a country in a given year. Used here to contextualise the economic scale of climate damage.")
         st.caption("**GHG** — Greenhouse Gas. Gases that trap heat in the atmosphere, including CO₂, methane (CH₄), and nitrous oxide (N₂O).")
@@ -471,8 +471,8 @@ with st.sidebar:
 st.title("Climate Vulnerability & Exposure")
 st.markdown(
     """
-    **Sub-heuristic:** Which nations are most vulnerable to climate change 
-    relative to how little they have contributed to emissions?
+    **Which nations are most vulnerable to climate change 
+    relative to how little they have contributed to emissions?**
 
     > *"The nations least responsible for climate change are bearing its greatest consequences."*
     """
@@ -482,18 +482,14 @@ st.divider()
 
 # ── HOW TO USE THIS DASHBOARD ─────────────────────────────────────────────────
 with st.container(border=True):
-    st.markdown("**How to Use This Dashboard**")
-    st.markdown(
-        "Use the **Year slider** in the sidebar to track how climate vulnerability "
-        "has shifted across nations from 1995 to 2024. Press **Play** to animate "
-        "through all years automatically. Apply the **Sub-Region filter** "
-        "to focus on specific parts of the world. Use the **Highlight Country** "
-        "selector above the scatter plot to assess a specific nation's position "
-        "relative to global peers. Toggle the **Median Guide Lines** on or off, and "
-        "switch between **Vulnerability Score** and **Sub-Region** colouring to explore "
-        "different dimensions of the data. Expand the **Glossary** in the sidebar "
-        "for definitions of all acronyms used throughout this page."
-    )
+    with st.expander("**How to Use This Dashboard**"):
+        st.markdown("Use the **Year slider** in the sidebar to track how climate vulnerability has shifted across nations from 1995 to 2024.")
+        st.markdown("Press **Play** to animate through all years automatically.")
+        st.markdown("Apply the **Sub-Region filter** to focus on specific parts of the world.")
+        st.markdown("Use the **Highlight Country** selector above the scatter plot to assess a specific nation's position relative to global peers.")
+        st.markdown("Toggle the **Median Guide Lines** on or off, and switch between **Vulnerability Score** and **Sub-Region** colouring to explore different dimensions of the data.")
+        st.markdown("Expand the **Glossary** in the sidebar for definitions of all acronyms used throughout this page.")
+    
 
 st.divider()
 
@@ -510,7 +506,7 @@ decision_support_section()
 st.divider()
 _, next_col = st.columns([11, 2])
 with next_col:
-    st.page_link("heuristic3/page.py", label="Next: Extreme Weather (Lam) →")
+    st.page_link("heuristic3/page.py", label="Next: Extreme Weather →")
 
 
 # ═════════════════════════════════════════════════════════════════════════════
