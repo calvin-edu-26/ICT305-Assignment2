@@ -249,23 +249,7 @@ def decision_support_section():
         "**Intergovernmental Panel on Climate Change (IPCC)**."
     )
 
-    # ── HOW TO USE THE DASHBOARD ──────────────────────────────────────────────
-    with st.container(border=True):
-        st.markdown("**How to Use This Dashboard**")
-        st.markdown(
-            "Use the **Year slider** in the sidebar to track how climate vulnerability "
-            "has shifted across nations from 1995 to 2024. Press **Play** to animate "
-            "through all years automatically. Apply the **Sub-Region filter** "
-            "to focus on specific parts of the world. Use the **Highlight Country** "
-            "selector above the scatter plot to assess a specific nation's position "
-            "relative to global peers. Toggle the **Median Guide Lines** on or off, and "
-            "switch between **Vulnerability Score** and **Sub-Region** colouring to explore "
-            "different dimensions of the data. Cross-reference the choropleth map, scatter "
-            "plot, and bar chart together: each view illuminates a different dimension "
-            "of the same injustice."
-        )
-
-    st.divider()
+    
 
     # ── DECISIONS THIS DASHBOARD SUPPORTS ────────────────────────────────────
     with st.container(border=True):
