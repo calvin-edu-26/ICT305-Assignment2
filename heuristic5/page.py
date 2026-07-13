@@ -81,6 +81,12 @@ def filter_provider_finance():
     return filtered_data
 
 
+def render_analysis_notes(label: str, insights: list[str], recommendations: list[Recommendation]):
+    with st.expander(label, expanded=False):
+        insight.render(insights)
+        recommendation.render(recommendations)
+
+
 # Section
 def overview_section(filtered_data):
     st.header("Climate Finance Gap")
@@ -92,23 +98,25 @@ def overview_section(filtered_data):
     render_overview(filtered_data)
     st.caption(OECD_PROVIDER_REF)
 
-    insight.render([
-        "Climate finance should not be judged only by total committed dollars; the key equity question is whether enough money is reaching adaptation needs.",
-        "A high mitigation total can still leave climate-vulnerable countries under-supported when adaptation finance remains a smaller share of commitments.",
-        "The selected year range and provider filters allow stakeholders to test whether major donors are improving their adaptation commitment over time.",
-    ])
-
-    recommendation.render([
-        Recommendation("UN Climate Finance Negotiators", [
-            "Use adaptation share as a headline accountability measure alongside total climate finance.",
-            "Request provider-level reporting that separates adaptation, mitigation, and overlapping climate finance commitments.",
-            "Prioritise follow-up with providers whose total climate finance is high but adaptation share remains low.",
-        ]),
-        Recommendation("Climate Finance Analysts", [
-            "Compare finance trends over multiple years instead of relying on a single commitment year.",
-            "Track whether adaptation finance grows in vulnerable regions rather than only in easier-to-fund mitigation projects.",
-        ]),
-    ])
+    render_analysis_notes(
+        "📖 Analysis — Chart 1: What this shows / What you can do",
+        [
+            "Climate finance should not be judged only by total committed dollars; the key equity question is whether enough money is reaching adaptation needs.",
+            "A high mitigation total can still leave climate-vulnerable countries under-supported when adaptation finance remains a smaller share of commitments.",
+            "The selected year range and provider filters allow stakeholders to test whether major donors are improving their adaptation commitment over time.",
+        ],
+        [
+            Recommendation("UN Climate Finance Negotiators", [
+                "Use adaptation share as a headline accountability measure alongside total climate finance.",
+                "Request provider-level reporting that separates adaptation, mitigation, and overlapping climate finance commitments.",
+                "Prioritise follow-up with providers whose total climate finance is high but adaptation share remains low.",
+            ]),
+            Recommendation("Climate Finance Analysts", [
+                "Compare finance trends over multiple years instead of relying on a single commitment year.",
+                "Track whether adaptation finance grows in vulnerable regions rather than only in easier-to-fund mitigation projects.",
+            ]),
+        ],
+    )
 
 
 def provider_and_region_section(filtered_data):
@@ -117,23 +125,25 @@ def provider_and_region_section(filtered_data):
     providers, regions, recipients = render_exploration(filtered_data)
     st.caption(OECD_PROVIDER_REF)
 
-    insight.render([
-        "Provider totals reveal who is committing the largest amount of climate finance, while adaptation share shows whether that finance is aligned with climate resilience.",
-        "Regional allocation exposes whether finance is concentrated in a few recipient regions or distributed toward places with larger adaptation needs.",
-        "Recipient-level adaptation versus mitigation patterns help identify countries receiving climate finance that may not match their resilience priorities.",
-    ])
-
-    recommendation.render([
-        Recommendation("Development Finance Institutions", [
-            "Set minimum adaptation-share benchmarks for portfolios that serve highly exposed regions.",
-            "Review recipient regions with high climate risk but comparatively low adaptation finance commitments.",
-            "Use recipient-level scatter patterns to find countries where mitigation-heavy support should be balanced with resilience funding.",
-        ]),
-        Recommendation("Recipient Governments", [
-            "Use the provider and region comparison to identify which donors are most likely to support adaptation programmes.",
-            "Frame funding requests around concrete adaptation gaps rather than broad climate finance needs.",
-        ]),
-    ])
+    render_analysis_notes(
+        "📖 Analysis — Chart 2: What this shows / What you can do",
+        [
+            "Provider totals reveal who is committing the largest amount of climate finance, while adaptation share shows whether that finance is aligned with climate resilience.",
+            "Regional allocation exposes whether finance is concentrated in a few recipient regions or distributed toward places with larger adaptation needs.",
+            "Recipient-level adaptation versus mitigation patterns help identify countries receiving climate finance that may not match their resilience priorities.",
+        ],
+        [
+            Recommendation("Development Finance Institutions", [
+                "Set minimum adaptation-share benchmarks for portfolios that serve highly exposed regions.",
+                "Review recipient regions with high climate risk but comparatively low adaptation finance commitments.",
+                "Use recipient-level scatter patterns to find countries where mitigation-heavy support should be balanced with resilience funding.",
+            ]),
+            Recommendation("Recipient Governments", [
+                "Use the provider and region comparison to identify which donors are most likely to support adaptation programmes.",
+                "Frame funding requests around concrete adaptation gaps rather than broad climate finance needs.",
+            ]),
+        ],
+    )
 
     return providers, regions, recipients
 
@@ -153,23 +163,25 @@ def finance_gap_section(filtered_data, providers, regions, recipients):
     )
     st.caption(f"{OWID_REF} | {VULNERABILITY_REF} | {OECD_PROVIDER_REF}")
 
-    insight.render([
-        "The emissions comparison links provider responsibility to adaptation support, showing whether large emitters are contributing proportionally to resilience finance.",
-        "Funding-per-capita patterns can reveal vulnerable countries that receive limited support even when climate exposure is high.",
-        "Sector-level adaptation finance shows whether commitments are aimed at practical resilience needs such as water, agriculture, disaster risk, and infrastructure.",
-    ])
-
-    recommendation.render([
-        Recommendation("Loss and Damage Fund Administrators", [
-            "Use emissions responsibility and adaptation delivery together when prioritising provider follow-up.",
-            "Flag high-emitting providers with low adaptation-per-emissions support for stronger contribution discussions.",
-            "Direct new funding windows toward vulnerable countries with low funding per capita.",
-        ]),
-        Recommendation("National Climate Planning Teams", [
-            "Connect adaptation funding requests to measurable vulnerability indicators.",
-            "Separate urgent resilience sectors from mitigation projects when preparing donor proposals.",
-        ]),
-    ])
+    render_analysis_notes(
+        "📖 Analysis — Chart 3: What this shows / What you can do",
+        [
+            "The emissions comparison links provider responsibility to adaptation support, showing whether large emitters are contributing proportionally to resilience finance.",
+            "Funding-per-capita patterns can reveal vulnerable countries that receive limited support even when climate exposure is high.",
+            "Sector-level adaptation finance shows whether commitments are aimed at practical resilience needs such as water, agriculture, disaster risk, and infrastructure.",
+        ],
+        [
+            Recommendation("Loss and Damage Fund Administrators", [
+                "Use emissions responsibility and adaptation delivery together when prioritising provider follow-up.",
+                "Flag high-emitting providers with low adaptation-per-emissions support for stronger contribution discussions.",
+                "Direct new funding windows toward vulnerable countries with low funding per capita.",
+            ]),
+            Recommendation("National Climate Planning Teams", [
+                "Connect adaptation funding requests to measurable vulnerability indicators.",
+                "Separate urgent resilience sectors from mitigation projects when preparing donor proposals.",
+            ]),
+        ],
+    )
 
 
 def decision_support_section(providers):
@@ -178,21 +190,23 @@ def decision_support_section(providers):
     render_decision_support(providers)
     st.caption(OECD_PROVIDER_REF)
 
-    insight.render([
-        "The decision table turns the dashboard into a provider comparison tool for identifying strong and weak adaptation performers.",
-        "Providers with large total finance but low adaptation share are priority cases for policy dialogue.",
-    ])
-
-    recommendation.render([
-        Recommendation("Policy Advisors", [
-            "Rank providers by adaptation share before preparing negotiation briefs.",
-            "Use the table to identify which providers require evidence-based follow-up on adaptation commitments.",
-        ]),
-        Recommendation("Programme Managers", [
-            "Use provider-level totals to shortlist likely partners for adaptation-focused projects.",
-            "Pair financial scale with adaptation share so large but mitigation-heavy providers are not mistaken for resilience leaders.",
-        ]),
-    ])
+    render_analysis_notes(
+        "📖 Analysis — Chart 4: What this shows / What you can do",
+        [
+            "The decision table turns the dashboard into a provider comparison tool for identifying strong and weak adaptation performers.",
+            "Providers with large total finance but low adaptation share are priority cases for policy dialogue.",
+        ],
+        [
+            Recommendation("Policy Advisors", [
+                "Rank providers by adaptation share before preparing negotiation briefs.",
+                "Use the table to identify which providers require evidence-based follow-up on adaptation commitments.",
+            ]),
+            Recommendation("Programme Managers", [
+                "Use provider-level totals to shortlist likely partners for adaptation-focused projects.",
+                "Pair financial scale with adaptation share so large but mitigation-heavy providers are not mistaken for resilience leaders.",
+            ]),
+        ],
+    )
 
 
 def recipient_finance_section():
@@ -204,22 +218,24 @@ def recipient_finance_section():
     render_oecd_dac_history(oecd_dac_history)
     st.caption(f"{OECD_RECIPIENT_REF} | {OECD_DAC_REF}")
 
-    insight.render([
-        "Recipient-side data checks whether committed finance is visible from the perspective of the countries and regions receiving support.",
-        "Historical OECD DAC trends provide context for whether adaptation has been catching up with mitigation over time.",
-        "A recipient view helps avoid judging climate finance only from donor announcements.",
-    ])
-
-    recommendation.render([
-        Recommendation("Recipient Country Ministries", [
-            "Compare provider-perspective and recipient-perspective finance before relying on headline donor totals.",
-            "Use historical DAC trends to argue for sustained adaptation support, not one-year increases.",
-        ]),
-        Recommendation("International NGOs", [
-            "Monitor whether finance reaches countries facing repeated climate shocks.",
-            "Use recipient evidence to support advocacy for transparent climate finance delivery.",
-        ]),
-    ])
+    render_analysis_notes(
+        "📖 Analysis — Chart 5: What this shows / What you can do",
+        [
+            "Recipient-side data checks whether committed finance is visible from the perspective of the countries and regions receiving support.",
+            "Historical OECD DAC trends provide context for whether adaptation has been catching up with mitigation over time.",
+            "A recipient view helps avoid judging climate finance only from donor announcements.",
+        ],
+        [
+            Recommendation("Recipient Country Ministries", [
+                "Compare provider-perspective and recipient-perspective finance before relying on headline donor totals.",
+                "Use historical DAC trends to argue for sustained adaptation support, not one-year increases.",
+            ]),
+            Recommendation("International NGOs", [
+                "Monitor whether finance reaches countries facing repeated climate shocks.",
+                "Use recipient evidence to support advocacy for transparent climate finance delivery.",
+            ]),
+        ],
+    )
 
 
 def risk_and_global_context_section():
@@ -236,23 +252,25 @@ def risk_and_global_context_section():
     render_historical_emissions(historical_emissions)
     st.caption(f"{VULNERABILITY_REF} | {WORLD_BANK_REF} | {HISTORICAL_EMISSIONS_REF}")
 
-    insight.render([
-        "Climate risk context explains why adaptation finance is an equity issue rather than only a budget issue.",
-        "World Bank and historical emissions indicators connect current finance decisions to wider development capacity and long-term responsibility.",
-        "Combining finance, risk, and emissions evidence supports stronger recommendations than a finance-only view.",
-    ])
-
-    recommendation.render([
-        Recommendation("UN and IPCC Working Groups", [
-            "Use risk indicators to justify adaptation finance targets for highly exposed countries.",
-            "Combine development capacity with historical responsibility when discussing fair provider contributions.",
-            "Treat climate finance as part of climate justice evidence, not only as aid accounting.",
-        ]),
-        Recommendation("Research Teams", [
-            "Use global context indicators to explain why similar finance totals can have different effects across regions.",
-            "Document where historical emitters and current finance providers diverge.",
-        ]),
-    ])
+    render_analysis_notes(
+        "📖 Analysis — Chart 6: What this shows / What you can do",
+        [
+            "Climate risk context explains why adaptation finance is an equity issue rather than only a budget issue.",
+            "World Bank and historical emissions indicators connect current finance decisions to wider development capacity and long-term responsibility.",
+            "Combining finance, risk, and emissions evidence supports stronger recommendations than a finance-only view.",
+        ],
+        [
+            Recommendation("UN and IPCC Working Groups", [
+                "Use risk indicators to justify adaptation finance targets for highly exposed countries.",
+                "Combine development capacity with historical responsibility when discussing fair provider contributions.",
+                "Treat climate finance as part of climate justice evidence, not only as aid accounting.",
+            ]),
+            Recommendation("Research Teams", [
+                "Use global context indicators to explain why similar finance totals can have different effects across regions.",
+                "Document where historical emitters and current finance providers diverge.",
+            ]),
+        ],
+    )
 
 
 def data_references_section():
@@ -360,8 +378,3 @@ finance_gap_section(filtered, providers_view, regions_view, recipients_view)
 decision_support_section(providers_view)
 recipient_finance_section()
 risk_and_global_context_section()
-
-st.divider()
-_, next_col = st.columns([15, 2])
-with next_col:
-    st.page_link("overview/page.py", label="Back to Overview →")
