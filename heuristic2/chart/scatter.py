@@ -12,31 +12,6 @@ def chart(
     show_medians: bool = True,
     color_mode: str = "vulnerability",
 ):
-    """
-    Builds a scatter plot of vulnerability score vs CO₂ per capita.
-
-    Parameters
-    ----------
-    data : pd.DataFrame
-        Full merged dataset from heuristic2/loaders/ndgain.py
-    selected_year : int
-        Year selected via sidebar slider
-    selected_subregions : list of str
-        Sub-regions selected via sidebar multiselect.
-        Empty list means all sub-regions shown.
-    selected_country : str
-        Country name to highlight. "None" means no highlight.
-    show_medians : bool
-        If True, draws median reference lines. Default True.
-    color_mode : str
-        "vulnerability" — colour by vulnerability score (Yellow→Red)
-        "subregion"     — colour by UN sub-region (fixed palette)
-
-    Returns
-    -------
-    plotly.graph_objects.Figure
-    """
-
     # ── PERCENTILE-BASED COLOUR RANGE ─────────────────────────────────────────
     vmin = data["vulnerability"].quantile(0.05)
     vmax = data["vulnerability"].quantile(0.95)

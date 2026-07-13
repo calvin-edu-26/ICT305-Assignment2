@@ -25,28 +25,6 @@ NAME_OVERRIDES = {
 
 
 def chart(data: pd.DataFrame, selected_year: int):
-    """
-    Builds an annotated horizontal bar chart showing the top 15 most
-    vulnerable, lowest-emitting nations for a selected year.
-
-    Selection logic:
-        1. Filter to countries at or below the median CO₂ per capita
-           (the low-emitting half of the world)
-        2. Rank those countries by vulnerability score (descending)
-        3. Take the top 15
-
-    Parameters
-    ----------
-    data : pd.DataFrame
-        Full merged dataset from heuristic2/loaders/ndgain.py
-    selected_year : int
-        Year selected via sidebar slider — chart updates in real time
-
-    Returns
-    -------
-    plotly.graph_objects.Figure
-    """
-
     # ── FILTER BY YEAR ────────────────────────────────────────────────────────
     snapshot = data[data["year"] == selected_year].copy()
     snapshot = snapshot.dropna(subset=["co2_per_capita", "vulnerability"])

@@ -3,24 +3,6 @@ import plotly.express as px
 
 
 def chart(data: pd.DataFrame, selected_year: int, selected_subregions: list):
-    """
-    Builds a choropleth map of climate vulnerability scores.
-
-    Parameters
-    ----------
-    data : pd.DataFrame
-        Full merged dataset from heuristic2/loaders/ndgain.py
-    selected_year : int
-        Year selected via sidebar slider
-    selected_subregions : list of str
-        Sub-regions selected via sidebar multiselect.
-        Empty list means all sub-regions shown.
-
-    Returns
-    -------
-    plotly.graph_objects.Figure
-    """
-
     # ── PERCENTILE-BASED COLOUR RANGE ─────────────────────────────────────────
     # Computed from the full dataset before any filtering so the colour
     # scale stays consistent as the year slider changes.
