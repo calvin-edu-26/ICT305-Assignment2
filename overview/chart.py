@@ -1,19 +1,3 @@
-"""
-overview/chart.py
------------------
-Builds the synthesis heatmap for the Overview page.
-
-Shows the top 40 most vulnerable countries across 5 dimensions:
-    1. CO₂ per Capita       (Calvin)  — who caused it
-    2. Vulnerability Score  (Ruben)   — who is exposed
-    3. Economic Damage %GDP (Lam)     — who is suffering
-    4. Displacement Pressure(Lucas)   — who faces displacement
-    5. Finance per Capita   (Nengjie) — who is getting help
-
-All metrics are min-max normalised to 0–1 for comparability.
-Countries are sorted by vulnerability score (descending).
-"""
-
 import numpy as np
 import pandas as pd
 import plotly.express as px
@@ -133,18 +117,6 @@ def _normalise(df: pd.DataFrame, col: str, percentile: float = 0.95) -> pd.Serie
 
 
 def chart(top_n: int = 40):
-    """
-    Builds the synthesis heatmap for the Overview page.
-
-    Parameters
-    ----------
-    top_n : int
-        Number of most vulnerable countries to show. Default 40.
-
-    Returns
-    -------
-    plotly.graph_objects.Figure
-    """
 
     df = _build_merged()
 
